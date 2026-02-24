@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LopFund.BLL/LopFund.BLL.csproj" Id="f6bd6def-b13a-40c7-bd20-b93c4699e5ee" />
+  <Project Path="LopFund.DAL/LopFund.DAL.csproj" Id="29284efc-b198-4c6e-9306-0bada6f3574c" />
+  <Project Path="LopFund.UI/LopFund.UI.csproj" Id="c2c32a3b-2a20-4028-bd29-a3fe7cf2f02f" />
+  <Project Path="QuyLopWinform/QuyLopWinform.csproj" Id="954783e5-c67b-49ae-a793-817765fd7848" />
+</Solution>

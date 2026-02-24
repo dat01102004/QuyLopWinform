@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="LopFundWinform" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=LopFundWinform;Integrated Security=True;Trust Server Certificate=True" SettingsObjectName="LopFund.DAL.Properties.Settings" SettingsPropertyName="LopFundWinformConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="User_Invoice" Member="Invoices" ThisKey="UserId" OtherKey="UserId" Type="Invoice" />
+      <Association Name="User_Classroom" Member="Classrooms" ThisKey="UserId" OtherKey="OwnerUserId" Type="Classroom" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Expenses" Member="Expenses">
+    <Type Name="Expense">
+      <Column Name="ExpenseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpentAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Association Name="Classroom_Expense" Member="Classroom" ThisKey="ClassId" OtherKey="ClassId" Type="Classroom" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Invoices" Member="Invoices">
+    <Type Name="Invoice">
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeeCycleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Invoice_InvoicePayment" Member="InvoicePayments" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoicePayment" />
+      <Association Name="Invoice_InvoicePayment1" Member="InvoicePayments1" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoicePayment" />
+      <Association Name="User_Invoice" Member="User" ThisKey="UserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+      <Association Name="FeeCycle_Invoice" Member="FeeCycle" ThisKey="FeeCycleId" OtherKey="FeeCycleId" Type="FeeCycle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Classrooms" Member="Classrooms">
+    <Type Name="Classroom">
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="InviteCode" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="OwnerUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Classroom_Expense" Member="Expenses" ThisKey="ClassId" OtherKey="ClassId" Type="Expense" />
+      <Association Name="Classroom_ClassMember" Member="ClassMembers" ThisKey="ClassId" OtherKey="ClassId" Type="ClassMember" />
+      <Association Name="Classroom_FeeCycle" Member="FeeCycles" ThisKey="ClassId" OtherKey="ClassId" Type="FeeCycle" />
+      <Association Name="User_Classroom" Member="User" ThisKey="OwnerUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClassMembers" Member="ClassMembers">
+    <Type Name="ClassMember">
+      <Column Name="MemberId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="JoinedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MemberRole" Type="System.String" DbType="NVarChar(40) NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="ClassMember_InvoicePayment" Member="InvoicePayments" ThisKey="MemberId" OtherKey="MemberId" Type="InvoicePayment" />
+      <Association Name="Classroom_ClassMember" Member="Classroom" ThisKey="ClassId" OtherKey="ClassId" Type="Classroom" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvoicePayments" Member="InvoicePayments">
+    <Type Name="InvoicePayment">
+      <Column Name="PaymentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaidAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EvidenceImagePath" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="MemberId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AmountPaid" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Invoice_InvoicePayment" Member="Invoice" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="Invoice" IsForeignKey="true" />
+      <Association Name="ClassMember_InvoicePayment" Member="ClassMember" ThisKey="MemberId" OtherKey="MemberId" Type="ClassMember" IsForeignKey="true" />
+      <Association Name="Invoice_InvoicePayment1" Member="Invoice1" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="Invoice" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeCycles" Member="FeeCycles">
+    <Type Name="FeeCycle">
+      <Column Name="FeeCycleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DueDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AllowLate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FeeCycle_Invoice" Member="Invoices" ThisKey="FeeCycleId" OtherKey="FeeCycleId" Type="Invoice" />
+      <Association Name="Classroom_FeeCycle" Member="Classroom" ThisKey="ClassId" OtherKey="ClassId" Type="Classroom" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
