@@ -44,10 +44,14 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cboFeeCycles = new System.Windows.Forms.ComboBox();
             this.btnOpenPayments = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnManageExpenses = new System.Windows.Forms.Button();
+            this.btnAddExpense = new System.Windows.Forms.Button();
             this.grpSummary.SuspendLayout();
             this.grpMembers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpSummary
@@ -57,7 +61,7 @@
             this.grpSummary.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpSummary.Location = new System.Drawing.Point(12, 12);
             this.grpSummary.Name = "grpSummary";
-            this.grpSummary.Size = new System.Drawing.Size(154, 79);
+            this.grpSummary.Size = new System.Drawing.Size(271, 79);
             this.grpSummary.TabIndex = 0;
             this.grpSummary.TabStop = false;
             this.grpSummary.Text = "Tổng Quan";
@@ -86,7 +90,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(177, 25);
+            this.label2.Location = new System.Drawing.Point(16, 112);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 13);
             this.label2.TabIndex = 4;
@@ -96,7 +100,7 @@
             // 
             this.lblTotalIn.AutoSize = true;
             this.lblTotalIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalIn.Location = new System.Drawing.Point(243, 20);
+            this.lblTotalIn.Location = new System.Drawing.Point(82, 107);
             this.lblTotalIn.Name = "lblTotalIn";
             this.lblTotalIn.Size = new System.Drawing.Size(29, 20);
             this.lblTotalIn.TabIndex = 1;
@@ -107,7 +111,7 @@
             // 
             this.lblTotalOut.AutoSize = true;
             this.lblTotalOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblTotalOut.Location = new System.Drawing.Point(243, 44);
+            this.lblTotalOut.Location = new System.Drawing.Point(82, 131);
             this.lblTotalOut.Name = "lblTotalOut";
             this.lblTotalOut.Size = new System.Drawing.Size(29, 20);
             this.lblTotalOut.TabIndex = 2;
@@ -171,7 +175,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(177, 51);
+            this.label3.Location = new System.Drawing.Point(16, 138);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 5;
@@ -192,7 +196,7 @@
             this.groupBox1.Controls.Add(this.cboFeeCycles);
             this.groupBox1.Controls.Add(this.btnOpenPayments);
             this.groupBox1.Controls.Add(this.btnNewFee);
-            this.groupBox1.Location = new System.Drawing.Point(12, 107);
+            this.groupBox1.Location = new System.Drawing.Point(12, 222);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(316, 95);
             this.groupBox1.TabIndex = 10;
@@ -219,11 +223,44 @@
             this.btnOpenPayments.UseVisualStyleBackColor = true;
             this.btnOpenPayments.Click += new System.EventHandler(this.btnOpenPayments_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnManageExpenses);
+            this.groupBox2.Controls.Add(this.btnAddExpense);
+            this.groupBox2.Location = new System.Drawing.Point(12, 341);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(316, 48);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Khoản chi";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // btnManageExpenses
+            // 
+            this.btnManageExpenses.Location = new System.Drawing.Point(150, 19);
+            this.btnManageExpenses.Name = "btnManageExpenses";
+            this.btnManageExpenses.Size = new System.Drawing.Size(121, 23);
+            this.btnManageExpenses.TabIndex = 1;
+            this.btnManageExpenses.Text = "QL khoản chi";
+            this.btnManageExpenses.UseVisualStyleBackColor = true;
+            this.btnManageExpenses.Click += new System.EventHandler(this.btnManageExpenses_Click);
+            // 
+            // btnAddExpense
+            // 
+            this.btnAddExpense.Location = new System.Drawing.Point(11, 19);
+            this.btnAddExpense.Name = "btnAddExpense";
+            this.btnAddExpense.Size = new System.Drawing.Size(75, 23);
+            this.btnAddExpense.TabIndex = 0;
+            this.btnAddExpense.Text = "Chi tiền";
+            this.btnAddExpense.UseVisualStyleBackColor = true;
+            this.btnAddExpense.Click += new System.EventHandler(this.btnAddExpense_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
@@ -242,6 +279,7 @@
             this.grpMembers.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,5 +303,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox cboFeeCycles;
         private System.Windows.Forms.Button btnOpenPayments;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button btnManageExpenses;
+        private System.Windows.Forms.Button btnAddExpense;
     }
 }

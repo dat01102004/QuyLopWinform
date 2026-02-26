@@ -352,5 +352,46 @@ namespace QuyLopWinform
         {
 
         }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddExpense_Click(object sender, EventArgs e)
+        {
+            using (var f = new FrmExpenseAdd())
+            {
+                if (f.ShowDialog() != DialogResult.OK) return;
+
+                using (var db = new DataClasses1DataContext())
+                {
+                    var exp = new Expense
+                    {
+                        ClassId = _currentClassId,
+                        Title = f.TitleValue,
+                        Amount = Convert.ToInt32(f.AmountValue), // DB đang là int
+                        SpentAt = f.ExpenseDateValue,            // <-- đúng tên property trong DBML
+                    };
+
+                    db.Expenses.InsertOnSubmit(exp);
+                    db.SubmitChanges();
+                }
+
+                // Trừ trực tiếp vào số dư (vì summary tính động totalIn-totalOut)
+                ReloadAll();
+            }
+        }
+
+        private void btnManageExpenses_Click(object sender, EventArgs e)
+        {
+            using (var f = new FrmExpenses(_currentClassId))
+            {
+                f.ShowDialog();
+            }
+
+            // Sau khi đóng form quản lý chi, load lại dashboard
+            ReloadAll();
+        }
     }
 }

@@ -59,6 +59,18 @@
     <Compile Include="FrmClassrooms.Designer.cs">
       <DependentUpon>FrmClassrooms.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmExpenseAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExpenseAdd.Designer.cs">
+      <DependentUpon>FrmExpenseAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmExpenses.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmExpenses.Designer.cs">
+      <DependentUpon>FrmExpenses.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmFeeCycleAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +105,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmClassrooms.resx">
       <DependentUpon>FrmClassrooms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExpenseAdd.resx">
+      <DependentUpon>FrmExpenseAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmExpenses.resx">
+      <DependentUpon>FrmExpenses.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmFeeCycleAdd.resx">
       <DependentUpon>FrmFeeCycleAdd.cs</DependentUpon>
