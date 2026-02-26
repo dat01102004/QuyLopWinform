@@ -47,11 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSession.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmClassPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmClassPicker.Designer.cs">
+      <DependentUpon>FrmClassPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmClassrooms.cs">
       <SubType>Form</SubType>
@@ -103,6 +110,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmClassPicker.resx">
+      <DependentUpon>FrmClassPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmClassrooms.resx">
       <DependentUpon>FrmClassrooms.cs</DependentUpon>
     </EmbeddedResource>

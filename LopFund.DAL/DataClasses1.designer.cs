@@ -51,6 +51,9 @@ namespace LopFund.DAL
     partial void InsertFeeCycle(FeeCycle instance);
     partial void UpdateFeeCycle(FeeCycle instance);
     partial void DeleteFeeCycle(FeeCycle instance);
+    partial void InsertUserClassroom(UserClassroom instance);
+    partial void UpdateUserClassroom(UserClassroom instance);
+    partial void DeleteUserClassroom(UserClassroom instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -138,6 +141,14 @@ namespace LopFund.DAL
 				return this.GetTable<FeeCycle>();
 			}
 		}
+		
+		public System.Data.Linq.Table<UserClassroom> UserClassrooms
+		{
+			get
+			{
+				return this.GetTable<UserClassroom>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
@@ -162,6 +173,8 @@ namespace LopFund.DAL
 		
 		private EntitySet<Classroom> _Classrooms;
 		
+		private EntitySet<UserClassroom> _UserClassrooms;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -184,6 +197,7 @@ namespace LopFund.DAL
 		{
 			this._Invoices = new EntitySet<Invoice>(new Action<Invoice>(this.attach_Invoices), new Action<Invoice>(this.detach_Invoices));
 			this._Classrooms = new EntitySet<Classroom>(new Action<Classroom>(this.attach_Classrooms), new Action<Classroom>(this.detach_Classrooms));
+			this._UserClassrooms = new EntitySet<UserClassroom>(new Action<UserClassroom>(this.attach_UserClassrooms), new Action<UserClassroom>(this.detach_UserClassrooms));
 			OnCreated();
 		}
 		
@@ -333,6 +347,19 @@ namespace LopFund.DAL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserClassroom", Storage="_UserClassrooms", ThisKey="UserId", OtherKey="UserId")]
+		public EntitySet<UserClassroom> UserClassrooms
+		{
+			get
+			{
+				return this._UserClassrooms;
+			}
+			set
+			{
+				this._UserClassrooms.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -372,6 +399,18 @@ namespace LopFund.DAL
 		}
 		
 		private void detach_Classrooms(Classroom entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_UserClassrooms(UserClassroom entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_UserClassrooms(UserClassroom entity)
 		{
 			this.SendPropertyChanging();
 			entity.User = null;
@@ -917,6 +956,8 @@ namespace LopFund.DAL
 		
 		private EntitySet<FeeCycle> _FeeCycles;
 		
+		private EntitySet<UserClassroom> _UserClassrooms;
+		
 		private EntityRef<User> _User;
 		
     #region Extensibility Method Definitions
@@ -938,6 +979,7 @@ namespace LopFund.DAL
 			this._Expenses = new EntitySet<Expense>(new Action<Expense>(this.attach_Expenses), new Action<Expense>(this.detach_Expenses));
 			this._ClassMembers = new EntitySet<ClassMember>(new Action<ClassMember>(this.attach_ClassMembers), new Action<ClassMember>(this.detach_ClassMembers));
 			this._FeeCycles = new EntitySet<FeeCycle>(new Action<FeeCycle>(this.attach_FeeCycles), new Action<FeeCycle>(this.detach_FeeCycles));
+			this._UserClassrooms = new EntitySet<UserClassroom>(new Action<UserClassroom>(this.attach_UserClassrooms), new Action<UserClassroom>(this.detach_UserClassrooms));
 			this._User = default(EntityRef<User>);
 			OnCreated();
 		}
@@ -1065,6 +1107,19 @@ namespace LopFund.DAL
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Classroom_UserClassroom", Storage="_UserClassrooms", ThisKey="ClassId", OtherKey="ClassId")]
+		public EntitySet<UserClassroom> UserClassrooms
+		{
+			get
+			{
+				return this._UserClassrooms;
+			}
+			set
+			{
+				this._UserClassrooms.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_Classroom", Storage="_User", ThisKey="OwnerUserId", OtherKey="UserId", IsForeignKey=true)]
 		public User User
 		{
@@ -1150,6 +1205,18 @@ namespace LopFund.DAL
 		}
 		
 		private void detach_FeeCycles(FeeCycle entity)
+		{
+			this.SendPropertyChanging();
+			entity.Classroom = null;
+		}
+		
+		private void attach_UserClassrooms(UserClassroom entity)
+		{
+			this.SendPropertyChanging();
+			entity.Classroom = this;
+		}
+		
+		private void detach_UserClassrooms(UserClassroom entity)
 		{
 			this.SendPropertyChanging();
 			entity.Classroom = null;
@@ -2052,6 +2119,246 @@ namespace LopFund.DAL
 		{
 			this.SendPropertyChanging();
 			entity.FeeCycle = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserClassrooms")]
+	public partial class UserClassroom : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserId;
+		
+		private int _ClassId;
+		
+		private string _Role;
+		
+		private System.DateTime _JoinedAt;
+		
+		private bool _IsActive;
+		
+		private EntityRef<Classroom> _Classroom;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnClassIdChanging(int value);
+    partial void OnClassIdChanged();
+    partial void OnRoleChanging(string value);
+    partial void OnRoleChanged();
+    partial void OnJoinedAtChanging(System.DateTime value);
+    partial void OnJoinedAtChanged();
+    partial void OnIsActiveChanging(bool value);
+    partial void OnIsActiveChanged();
+    #endregion
+		
+		public UserClassroom()
+		{
+			this._Classroom = default(EntityRef<Classroom>);
+			this._User = default(EntityRef<User>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int ClassId
+		{
+			get
+			{
+				return this._ClassId;
+			}
+			set
+			{
+				if ((this._ClassId != value))
+				{
+					if (this._Classroom.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnClassIdChanging(value);
+					this.SendPropertyChanging();
+					this._ClassId = value;
+					this.SendPropertyChanged("ClassId");
+					this.OnClassIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Role", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string Role
+		{
+			get
+			{
+				return this._Role;
+			}
+			set
+			{
+				if ((this._Role != value))
+				{
+					this.OnRoleChanging(value);
+					this.SendPropertyChanging();
+					this._Role = value;
+					this.SendPropertyChanged("Role");
+					this.OnRoleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JoinedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime JoinedAt
+		{
+			get
+			{
+				return this._JoinedAt;
+			}
+			set
+			{
+				if ((this._JoinedAt != value))
+				{
+					this.OnJoinedAtChanging(value);
+					this.SendPropertyChanging();
+					this._JoinedAt = value;
+					this.SendPropertyChanged("JoinedAt");
+					this.OnJoinedAtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
+		public bool IsActive
+		{
+			get
+			{
+				return this._IsActive;
+			}
+			set
+			{
+				if ((this._IsActive != value))
+				{
+					this.OnIsActiveChanging(value);
+					this.SendPropertyChanging();
+					this._IsActive = value;
+					this.SendPropertyChanged("IsActive");
+					this.OnIsActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Classroom_UserClassroom", Storage="_Classroom", ThisKey="ClassId", OtherKey="ClassId", IsForeignKey=true)]
+		public Classroom Classroom
+		{
+			get
+			{
+				return this._Classroom.Entity;
+			}
+			set
+			{
+				Classroom previousValue = this._Classroom.Entity;
+				if (((previousValue != value) 
+							|| (this._Classroom.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Classroom.Entity = null;
+						previousValue.UserClassrooms.Remove(this);
+					}
+					this._Classroom.Entity = value;
+					if ((value != null))
+					{
+						value.UserClassrooms.Add(this);
+						this._ClassId = value.ClassId;
+					}
+					else
+					{
+						this._ClassId = default(int);
+					}
+					this.SendPropertyChanged("Classroom");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserClassroom", Storage="_User", ThisKey="UserId", OtherKey="UserId", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.UserClassrooms.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.UserClassrooms.Add(this);
+						this._UserId = value.UserId;
+					}
+					else
+					{
+						this._UserId = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

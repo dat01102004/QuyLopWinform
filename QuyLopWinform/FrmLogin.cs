@@ -45,40 +45,26 @@ namespace QuyLopWinform
 
                 LoggedInUser = user;
 
-                // Lấy danh sách lớp theo OwnerUserId
-                var myClasses = _classBll.GetAll()
-                                         .Where(c => c.OwnerUserId == user.UserId)
-                                         .OrderByDescending(c => c.ClassId)
-                                         .ToList();
+                // 1) set user session
+                AppSession.CurrentUserId = user.UserId;
+                AppSession.CurrentClassId = 0;
 
-                // 1) Chưa có lớp => bắt buộc tạo lớp mới
-                if (myClasses.Count == 0)
+                // 2) luôn mở form chọn lớp
+                using (var pick = new FrmClassPicker())
                 {
-                    using (var f = new FrmClassrooms(user.UserId, onboardingCreateFirst: true, selectOnly: false))
+                    var r = pick.ShowDialog();
+                    if (r != DialogResult.OK)
+                        return;
+
+                    // FrmClassPicker sẽ set SelectedClassId + AppSession.CurrentClassId
+                    if (!pick.SelectedClassId.HasValue)
                     {
-                        var r = f.ShowDialog();
-                        if (r != DialogResult.OK || !f.SelectedClassId.HasValue)
-                            return; // user đóng form / chưa tạo
-
-                        SelectedClassId = f.SelectedClassId.Value;
+                        MessageBox.Show("Bạn chưa chọn lớp.");
+                        return;
                     }
-                }
-                // 2) Có đúng 1 lớp => vào thẳng
-                else if (myClasses.Count == 1)
-                {
-                    SelectedClassId = myClasses[0].ClassId;
-                }
-                // 3) Có nhiều lớp => chọn lớp (double click)
-                else
-                {
-                    using (var f = new FrmClassrooms(user.UserId, onboardingCreateFirst: false, selectOnly: true))
-                    {
-                        var r = f.ShowDialog();
-                        if (r != DialogResult.OK || !f.SelectedClassId.HasValue)
-                            return;
 
-                        SelectedClassId = f.SelectedClassId.Value;
-                    }
+                    SelectedClassId = pick.SelectedClassId.Value;
+                    AppSession.CurrentClassId = SelectedClassId.Value;
                 }
 
                 DialogResult = DialogResult.OK;

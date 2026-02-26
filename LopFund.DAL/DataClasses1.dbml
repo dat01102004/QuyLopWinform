@@ -10,6 +10,7 @@
       <Column Name="Role" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
       <Association Name="User_Invoice" Member="Invoices" ThisKey="UserId" OtherKey="UserId" Type="Invoice" />
       <Association Name="User_Classroom" Member="Classrooms" ThisKey="UserId" OtherKey="OwnerUserId" Type="Classroom" />
+      <Association Name="User_UserClassroom" Member="UserClassrooms" ThisKey="UserId" OtherKey="UserId" Type="UserClassroom" />
     </Type>
   </Table>
   <Table Name="dbo.Expenses" Member="Expenses">
@@ -45,6 +46,7 @@
       <Association Name="Classroom_Expense" Member="Expenses" ThisKey="ClassId" OtherKey="ClassId" Type="Expense" />
       <Association Name="Classroom_ClassMember" Member="ClassMembers" ThisKey="ClassId" OtherKey="ClassId" Type="ClassMember" />
       <Association Name="Classroom_FeeCycle" Member="FeeCycles" ThisKey="ClassId" OtherKey="ClassId" Type="FeeCycle" />
+      <Association Name="Classroom_UserClassroom" Member="UserClassrooms" ThisKey="ClassId" OtherKey="ClassId" Type="UserClassroom" />
       <Association Name="User_Classroom" Member="User" ThisKey="OwnerUserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
@@ -87,6 +89,17 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="FeeCycle_Invoice" Member="Invoices" ThisKey="FeeCycleId" OtherKey="FeeCycleId" Type="Invoice" />
       <Association Name="Classroom_FeeCycle" Member="Classroom" ThisKey="ClassId" OtherKey="ClassId" Type="Classroom" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserClassrooms" Member="UserClassrooms">
+    <Type Name="UserClassroom">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="JoinedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Classroom_UserClassroom" Member="Classroom" ThisKey="ClassId" OtherKey="ClassId" Type="Classroom" IsForeignKey="true" />
+      <Association Name="User_UserClassroom" Member="User" ThisKey="UserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

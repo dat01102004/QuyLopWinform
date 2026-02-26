@@ -47,6 +47,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnManageExpenses = new System.Windows.Forms.Button();
             this.btnAddExpense = new System.Windows.Forms.Button();
+            this.btnChangeClass = new System.Windows.Forms.Button();
             this.grpSummary.SuspendLayout();
             this.grpMembers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).BeginInit();
@@ -255,11 +256,22 @@
             this.btnAddExpense.UseVisualStyleBackColor = true;
             this.btnAddExpense.Click += new System.EventHandler(this.btnAddExpense_Click);
             // 
+            // btnChangeClass
+            // 
+            this.btnChangeClass.Location = new System.Drawing.Point(305, 25);
+            this.btnChangeClass.Name = "btnChangeClass";
+            this.btnChangeClass.Size = new System.Drawing.Size(75, 23);
+            this.btnChangeClass.TabIndex = 12;
+            this.btnChangeClass.Text = "Đổi lớp";
+            this.btnChangeClass.UseVisualStyleBackColor = true;
+            this.btnChangeClass.Click += new System.EventHandler(this.btnChangeClass_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnChangeClass);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
@@ -306,5 +318,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnManageExpenses;
         private System.Windows.Forms.Button btnAddExpense;
+        private System.Windows.Forms.Button btnChangeClass;
     }
 }

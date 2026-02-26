@@ -19,12 +19,36 @@ namespace QuyLopWinform
         {
             _currentUser = user ?? throw new ArgumentNullException(nameof(user));
             _currentClassId = classId;
+
+            // đồng bộ session nếu bạn còn dùng ctor này
+            AppSession.CurrentUserId = user.UserId;
+            AppSession.CurrentClassId = classId;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
             SetupGrid();
+
+            // ✅ đồng bộ từ session (quan trọng)
+            SyncSessionToLocal();
+
             ReloadAll();
+        }
+
+        private void SyncSessionToLocal()
+        {
+            // luôn lấy classId mới nhất từ session
+            _currentClassId = AppSession.CurrentClassId;
+
+            // nếu _currentUser chưa set (trường hợp bạn mở FrmMain() ctor rỗng)
+            // thì load lại từ DB theo AppSession.CurrentUserId
+            if (_currentUser == null && AppSession.CurrentUserId != 0)
+            {
+                using (var db = new DataClasses1DataContext())
+                {
+                    _currentUser = db.Users.FirstOrDefault(u => u.UserId == AppSession.CurrentUserId);
+                }
+            }
         }
 
         private void SetupGrid()
@@ -46,6 +70,12 @@ namespace QuyLopWinform
         {
             try
             {
+                // ✅ mỗi lần reload đều sync để đổi lớp ăn ngay
+                SyncSessionToLocal();
+
+                if (_currentUser == null)
+                    throw new Exception("Không tìm thấy thông tin user hiện tại.");
+
                 using (var db = new DataClasses1DataContext())
                 {
                     // Title + class name
@@ -104,7 +134,6 @@ namespace QuyLopWinform
 
         /// <summary>
         /// Đổ danh sách FeeCycles vào cboFeeCycles (khoản thu).
-        /// Có format: Title - Amount - trạng thái - hạn nộp
         /// </summary>
         private void LoadFeeCycles(DataClasses1DataContext db)
         {
@@ -118,7 +147,6 @@ namespace QuyLopWinform
                     x.Amount,
                     x.DueDate,
                     x.AllowLate,
-                    // lấy InvoiceId đi kèm (thường 1 feeCycle có 1 invoice "thu chung")
                     InvoiceId = db.Invoices.Where(i => i.FeeCycleId == x.FeeCycleId)
                                            .Select(i => (int?)i.InvoiceId)
                                            .FirstOrDefault()
@@ -137,7 +165,6 @@ namespace QuyLopWinform
             cboFeeCycles.ValueMember = "FeeCycleId";
             cboFeeCycles.DataSource = list;
 
-            // Enable/Disable nút Thu Tiền
             btnOpenPayments.Enabled = list.Count > 0;
         }
 
@@ -264,12 +291,11 @@ namespace QuyLopWinform
 
                 using (var db = new DataClasses1DataContext())
                 {
-                    // 1) FeeCycle (Amount của bạn là INT)
                     var fc = new FeeCycle
                     {
                         ClassId = _currentClassId,
                         Title = f.TitleValue,
-                        Amount = Convert.ToInt32(f.AmountValue), // AmountValue nên là int (nudAmount.Value)
+                        Amount = Convert.ToInt32(f.AmountValue),
                         DueDate = f.UseDueDate ? (DateTime?)f.DueDateValue : null,
                         AllowLate = true,
                         CreatedAt = DateTime.Now
@@ -278,7 +304,6 @@ namespace QuyLopWinform
                     db.SubmitChanges();
                     feeCycleId = fc.FeeCycleId;
 
-                    // 2) Invoice gắn FeeCycle
                     var inv = new Invoice
                     {
                         FeeCycleId = feeCycleId,
@@ -291,11 +316,9 @@ namespace QuyLopWinform
                     invoiceId = inv.InvoiceId;
                 }
 
-                // 3) Reload + chọn đúng khoản thu vừa tạo
                 ReloadAll();
                 cboFeeCycles.SelectedValue = feeCycleId;
 
-                // 4) Mở form tick ai nộp
                 using (var pay = new FrmInvoicePayments(_currentClassId, invoiceId))
                 {
                     pay.ShowDialog();
@@ -305,7 +328,6 @@ namespace QuyLopWinform
             }
         }
 
-        // ===== Khoản thu: Thu tiền (mở form tick ai nộp) =====
         private void btnOpenPayments_Click(object sender, EventArgs e)
         {
             if (cboFeeCycles.SelectedValue == null)
@@ -339,25 +361,6 @@ namespace QuyLopWinform
             ReloadAll();
         }
 
-        // Có thể để trống nếu designer đang gắn event
-        private void cboFeeCycles_SelectedIndexChanged(object sender, EventArgs e) { }
-        private void dgvMembers_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
-        private void grpMembers_Enter(object sender, EventArgs e) { }
-        private void grpSummary_Enter(object sender, EventArgs e) { }
-        private void lblBalance_Click(object sender, EventArgs e) { }
-        private void lblTotalIn_Click(object sender, EventArgs e) { }
-        private void lblTotalOut_Click(object sender, EventArgs e) { }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnAddExpense_Click(object sender, EventArgs e)
         {
             using (var f = new FrmExpenseAdd())
@@ -370,15 +373,14 @@ namespace QuyLopWinform
                     {
                         ClassId = _currentClassId,
                         Title = f.TitleValue,
-                        Amount = Convert.ToInt32(f.AmountValue), // DB đang là int
-                        SpentAt = f.ExpenseDateValue,            // <-- đúng tên property trong DBML
+                        Amount = Convert.ToInt32(f.AmountValue),
+                        SpentAt = f.ExpenseDateValue,
                     };
 
                     db.Expenses.InsertOnSubmit(exp);
                     db.SubmitChanges();
                 }
 
-                // Trừ trực tiếp vào số dư (vì summary tính động totalIn-totalOut)
                 ReloadAll();
             }
         }
@@ -390,8 +392,32 @@ namespace QuyLopWinform
                 f.ShowDialog();
             }
 
-            // Sau khi đóng form quản lý chi, load lại dashboard
             ReloadAll();
         }
+
+        // ✅ nút đổi lớp
+        private void btnChangeClass_Click(object sender, EventArgs e)
+        {
+            using (var f = new FrmClassPicker())
+            {
+                if (f.ShowDialog() != DialogResult.OK) return;
+                if (!f.SelectedClassId.HasValue) return;
+
+                AppSession.CurrentClassId = f.SelectedClassId.Value;
+            }
+
+            ReloadAll(); // vì ReloadAll đã sync session => classId đổi chắc chắn
+        }
+
+        // event stub giữ lại cho designer
+        private void cboFeeCycles_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void dgvMembers_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+        private void grpMembers_Enter(object sender, EventArgs e) { }
+        private void grpSummary_Enter(object sender, EventArgs e) { }
+        private void lblBalance_Click(object sender, EventArgs e) { }
+        private void lblTotalIn_Click(object sender, EventArgs e) { }
+        private void lblTotalOut_Click(object sender, EventArgs e) { }
+        private void groupBox1_Enter(object sender, EventArgs e) { }
+        private void groupBox2_Enter(object sender, EventArgs e) { }
     }
 }
