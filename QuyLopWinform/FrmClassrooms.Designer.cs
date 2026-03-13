@@ -38,7 +38,11 @@
             this.btnReload = new System.Windows.Forms.Button();
             this.OwnerUserId = new System.Windows.Forms.Label();
             this.txtOwnerUserId = new System.Windows.Forms.TextBox();
+            this.dgvUsers = new System.Windows.Forms.DataGridView();
+            this.btnDemote = new System.Windows.Forms.Button();
+            this.btnPromote = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClassrooms)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvClassrooms
@@ -46,7 +50,7 @@
             this.dgvClassrooms.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvClassrooms.Location = new System.Drawing.Point(350, 33);
             this.dgvClassrooms.Name = "dgvClassrooms";
-            this.dgvClassrooms.Size = new System.Drawing.Size(438, 297);
+            this.dgvClassrooms.Size = new System.Drawing.Size(426, 193);
             this.dgvClassrooms.TabIndex = 0;
             this.dgvClassrooms.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClassrooms_CellContentClick);
             // 
@@ -134,11 +138,46 @@
             this.txtOwnerUserId.TabIndex = 9;
             this.txtOwnerUserId.Visible = false;
             // 
+            // dgvUsers
+            // 
+            this.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvUsers.Location = new System.Drawing.Point(44, 258);
+            this.dgvUsers.MultiSelect = false;
+            this.dgvUsers.Name = "dgvUsers";
+            this.dgvUsers.ReadOnly = true;
+            this.dgvUsers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvUsers.Size = new System.Drawing.Size(426, 162);
+            this.dgvUsers.TabIndex = 10;
+            this.dgvUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsers_CellContentClick);
+            // 
+            // btnDemote
+            // 
+            this.btnDemote.Location = new System.Drawing.Point(487, 353);
+            this.btnDemote.Name = "btnDemote";
+            this.btnDemote.Size = new System.Drawing.Size(75, 23);
+            this.btnDemote.TabIndex = 11;
+            this.btnDemote.Text = "Hạ Quyền";
+            this.btnDemote.UseVisualStyleBackColor = true;
+            this.btnDemote.Click += new System.EventHandler(this.btnDemote_Click);
+            // 
+            // btnPromote
+            // 
+            this.btnPromote.Location = new System.Drawing.Point(487, 308);
+            this.btnPromote.Name = "btnPromote";
+            this.btnPromote.Size = new System.Drawing.Size(75, 23);
+            this.btnPromote.TabIndex = 12;
+            this.btnPromote.Text = "Nâng Admin";
+            this.btnPromote.UseVisualStyleBackColor = true;
+            this.btnPromote.Click += new System.EventHandler(this.btnPromote_Click);
+            // 
             // FrmClassrooms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnPromote);
+            this.Controls.Add(this.btnDemote);
+            this.Controls.Add(this.dgvUsers);
             this.Controls.Add(this.txtOwnerUserId);
             this.Controls.Add(this.OwnerUserId);
             this.Controls.Add(this.btnReload);
@@ -153,6 +192,7 @@
             this.Text = "FrmClassrooms";
             this.Load += new System.EventHandler(this.FrmClassrooms_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvClassrooms)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -170,5 +210,8 @@
         private System.Windows.Forms.Button btnReload;
         private System.Windows.Forms.Label OwnerUserId;
         private System.Windows.Forms.TextBox txtOwnerUserId;
+        private System.Windows.Forms.DataGridView dgvUsers;
+        private System.Windows.Forms.Button btnDemote;
+        private System.Windows.Forms.Button btnPromote;
     }
 }

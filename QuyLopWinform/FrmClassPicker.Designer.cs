@@ -34,27 +34,31 @@
             this.btnSelect = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnManage = new System.Windows.Forms.Button();
+            this.txtInviteCode = new System.Windows.Forms.TextBox();
+            this.btnJoin = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClasses)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvClasses
             // 
             this.dgvClasses.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvClasses.Location = new System.Drawing.Point(447, 29);
+            this.dgvClasses.Location = new System.Drawing.Point(358, 29);
             this.dgvClasses.Name = "dgvClasses";
-            this.dgvClasses.Size = new System.Drawing.Size(317, 199);
+            this.dgvClasses.Size = new System.Drawing.Size(406, 199);
             this.dgvClasses.TabIndex = 0;
             // 
             // txtClassName
             // 
-            this.txtClassName.Location = new System.Drawing.Point(80, 77);
+            this.txtClassName.Location = new System.Drawing.Point(52, 67);
             this.txtClassName.Name = "txtClassName";
             this.txtClassName.Size = new System.Drawing.Size(100, 20);
             this.txtClassName.TabIndex = 1;
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(24, 117);
+            this.btnCreate.Location = new System.Drawing.Point(12, 93);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new System.Drawing.Size(75, 23);
             this.btnCreate.TabIndex = 2;
@@ -64,7 +68,7 @@
             // 
             // btnSelect
             // 
-            this.btnSelect.Location = new System.Drawing.Point(159, 117);
+            this.btnSelect.Location = new System.Drawing.Point(110, 93);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(75, 23);
             this.btnSelect.TabIndex = 3;
@@ -74,7 +78,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(52, 246);
+            this.btnClose.Location = new System.Drawing.Point(689, 254);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 4;
@@ -84,7 +88,7 @@
             // 
             // btnManage
             // 
-            this.btnManage.Location = new System.Drawing.Point(311, 39);
+            this.btnManage.Location = new System.Drawing.Point(203, 34);
             this.btnManage.Name = "btnManage";
             this.btnManage.Size = new System.Drawing.Size(75, 23);
             this.btnManage.TabIndex = 5;
@@ -92,11 +96,50 @@
             this.btnManage.UseVisualStyleBackColor = true;
             this.btnManage.Click += new System.EventHandler(this.btnManage_Click);
             // 
+            // txtInviteCode
+            // 
+            this.txtInviteCode.Location = new System.Drawing.Point(52, 155);
+            this.txtInviteCode.Name = "txtInviteCode";
+            this.txtInviteCode.Size = new System.Drawing.Size(100, 20);
+            this.txtInviteCode.TabIndex = 6;
+            // 
+            // btnJoin
+            // 
+            this.btnJoin.Location = new System.Drawing.Point(67, 181);
+            this.btnJoin.Name = "btnJoin";
+            this.btnJoin.Size = new System.Drawing.Size(75, 23);
+            this.btnJoin.TabIndex = 7;
+            this.btnJoin.Text = "Tham gia";
+            this.btnJoin.UseVisualStyleBackColor = true;
+            this.btnJoin.Click += new System.EventHandler(this.btnJoin_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(83, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Tạo Lớp";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(64, 139);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(70, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Tham Gia lớp";
+            // 
             // FrmClassPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(787, 305);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnJoin);
+            this.Controls.Add(this.txtInviteCode);
             this.Controls.Add(this.btnManage);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnSelect);
@@ -119,5 +162,9 @@
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnManage;
+        private System.Windows.Forms.TextBox txtInviteCode;
+        private System.Windows.Forms.Button btnJoin;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

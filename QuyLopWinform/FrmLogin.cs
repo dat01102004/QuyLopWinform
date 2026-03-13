@@ -21,6 +21,9 @@ namespace QuyLopWinform
             // tránh bị gắn event nhiều lần
             btnLogin.Click -= btnLogin_Click;
             btnLogin.Click += btnLogin_Click;
+
+            btnRegister.Click -= btnRegister_Click;
+            btnRegister.Click += btnRegister_Click;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -77,5 +80,12 @@ namespace QuyLopWinform
         }
         private void FrmLogin_Load(object sender, EventArgs e) { }
 
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            using (var f = new FrmRegister())
+            {
+                f.ShowDialog();
+            }
+        }
     }
 }

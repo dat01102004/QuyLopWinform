@@ -35,6 +35,9 @@ namespace QuyLopWinform
 
             btnManage.Click -= btnManage_Click;
             btnManage.Click += btnManage_Click;
+
+            btnJoin.Click -= btnJoin_Click;
+            btnJoin.Click += btnJoin_Click;
         }
 
         private void SetupGrid()
@@ -98,9 +101,16 @@ namespace QuyLopWinform
                     return;
                 }
 
+                int newClassId;
+
                 using (var db = new DataClasses1DataContext())
                 {
-                    var invite = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+                    // chống trùng InviteCode
+                    string invite;
+                    do
+                    {
+                        invite = Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+                    } while (db.Classrooms.Any(x => x.InviteCode == invite));
 
                     // tạo lớp
                     var c = new Classroom
@@ -111,23 +121,24 @@ namespace QuyLopWinform
                     };
                     db.Classrooms.InsertOnSubmit(c);
                     db.SubmitChanges();
+                    newClassId = c.ClassId;
 
                     // join user vào lớp (Owner)
                     var uc = new UserClassroom
                     {
                         UserId = AppSession.CurrentUserId,
-                        ClassId = c.ClassId,
+                        ClassId = newClassId,
                         Role = "Owner",
                         JoinedAt = DateTime.Now,
                         IsActive = true
                     };
                     db.UserClassrooms.InsertOnSubmit(uc);
                     db.SubmitChanges();
-
-                    // set luôn class hiện tại
-                    AppSession.CurrentClassId = c.ClassId;
-                    SelectedClassId = c.ClassId;
                 }
+
+                // set luôn class hiện tại
+                AppSession.CurrentClassId = newClassId;
+                SelectedClassId = newClassId;
 
                 txtClassName.Text = "";
                 LoadMyClasses();
@@ -158,7 +169,6 @@ namespace QuyLopWinform
 
         private void dgvClasses_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            // double click = chọn nhanh
             btnSelect_Click(sender, e);
         }
 
@@ -170,14 +180,88 @@ namespace QuyLopWinform
 
         private void btnManage_Click(object sender, EventArgs e)
         {
-            // mở quản lý lớp (tạo/sửa/xoá)
             using (var f = new FrmClassrooms(AppSession.CurrentUserId, onboardingCreateFirst: false, selectOnly: false))
             {
                 f.ShowDialog();
             }
 
-            // quay lại picker thì reload danh sách lớp
             LoadMyClasses();
+        }
+
+        private void btnJoin_Click(object sender, EventArgs e)
+        {
+            var code = (txtInviteCode.Text ?? "").Trim();
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                MessageBox.Show("Vui lòng nhập mã mời (Invite Code).");
+                txtInviteCode.Focus();
+                return;
+            }
+
+            try
+            {
+                int joinedClassId;
+
+                using (var db = new DataClasses1DataContext())
+                {
+                    // tìm lớp theo invite code
+                    var cls = db.Classrooms.FirstOrDefault(c => c.InviteCode == code);
+                    if (cls == null)
+                    {
+                        MessageBox.Show("Mã mời không đúng hoặc lớp không tồn tại.");
+                        return;
+                    }
+
+                    joinedClassId = cls.ClassId;
+
+                    // đã join chưa?
+                    var existed = db.UserClassrooms.FirstOrDefault(x =>
+                        x.UserId == AppSession.CurrentUserId && x.ClassId == joinedClassId);
+
+                    if (existed != null)
+                    {
+                        if (!existed.IsActive)
+                        {
+                            existed.IsActive = true;
+                            existed.JoinedAt = DateTime.Now;
+                            if (string.IsNullOrWhiteSpace(existed.Role)) existed.Role = "Member";
+                            db.SubmitChanges();
+                        }
+
+                        MessageBox.Show("Bạn đã tham gia lớp này rồi.");
+                    }
+                    else
+                    {
+                        var uc = new UserClassroom
+                        {
+                            UserId = AppSession.CurrentUserId,
+                            ClassId = joinedClassId,
+                            Role = "Member",
+                            JoinedAt = DateTime.Now,
+                            IsActive = true
+                        };
+                        db.UserClassrooms.InsertOnSubmit(uc);
+                        db.SubmitChanges();
+
+                        MessageBox.Show("Tham gia lớp thành công!");
+                    }
+                }
+
+                // cập nhật session + UI sau khi join (ngoài using)
+                AppSession.CurrentClassId = joinedClassId;
+                SelectedClassId = joinedClassId;
+
+                txtInviteCode.Text = "";
+                LoadMyClasses();
+
+                // ✅ nếu bạn muốn join xong vào luôn lớp thì mở dòng dưới:
+                // DialogResult = DialogResult.OK; Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi tham gia lớp", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

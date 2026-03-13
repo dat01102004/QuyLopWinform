@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace LopFund.DAL
 {
@@ -9,7 +10,23 @@ namespace LopFund.DAL
 
         public User GetByEmail(string email)
         {
+            email = (email ?? "").Trim();
             return db.Users.SingleOrDefault(x => x.Email == email);
+        }
+
+        public bool ExistsEmail(string email)
+        {
+            email = (email ?? "").Trim();
+            return db.Users.Any(x => x.Email == email);
+        }
+
+        public User Insert(User user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            db.Users.InsertOnSubmit(user);
+            db.SubmitChanges();
+            return user;
         }
     }
 }

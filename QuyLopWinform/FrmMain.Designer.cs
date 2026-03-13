@@ -48,6 +48,7 @@
             this.btnManageExpenses = new System.Windows.Forms.Button();
             this.btnAddExpense = new System.Windows.Forms.Button();
             this.btnChangeClass = new System.Windows.Forms.Button();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.grpSummary.SuspendLayout();
             this.grpMembers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).BeginInit();
@@ -266,11 +267,22 @@
             this.btnChangeClass.UseVisualStyleBackColor = true;
             this.btnChangeClass.Click += new System.EventHandler(this.btnChangeClass_Click);
             // 
+            // btnLogout
+            // 
+            this.btnLogout.Location = new System.Drawing.Point(12, 424);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(75, 23);
+            this.btnLogout.TabIndex = 13;
+            this.btnLogout.Text = "Đăng Xuất";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnChangeClass);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -319,5 +331,6 @@
         private System.Windows.Forms.Button btnManageExpenses;
         private System.Windows.Forms.Button btnAddExpense;
         private System.Windows.Forms.Button btnChangeClass;
+        private System.Windows.Forms.Button btnLogout;
     }
 }

@@ -33,6 +33,7 @@
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
+            this.btnRegister = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -77,11 +78,22 @@
             this.btnLogin.Text = "Đăng Nhập";
             this.btnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnRegister
+            // 
+            this.btnRegister.Location = new System.Drawing.Point(246, 99);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(75, 23);
+            this.btnRegister.TabIndex = 5;
+            this.btnRegister.Text = "Đăng ký";
+            this.btnRegister.UseVisualStyleBackColor = true;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtEmail);
@@ -102,5 +114,6 @@
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnRegister;
     }
 }

@@ -28,20 +28,14 @@ namespace QuyLopWinform
         private void FrmMain_Load(object sender, EventArgs e)
         {
             SetupGrid();
-
-            // ✅ đồng bộ từ session (quan trọng)
             SyncSessionToLocal();
-
             ReloadAll();
         }
 
         private void SyncSessionToLocal()
         {
-            // luôn lấy classId mới nhất từ session
             _currentClassId = AppSession.CurrentClassId;
 
-            // nếu _currentUser chưa set (trường hợp bạn mở FrmMain() ctor rỗng)
-            // thì load lại từ DB theo AppSession.CurrentUserId
             if (_currentUser == null && AppSession.CurrentUserId != 0)
             {
                 using (var db = new DataClasses1DataContext())
@@ -50,6 +44,60 @@ namespace QuyLopWinform
                 }
             }
         }
+
+        // ===================== PHÂN QUYỀN =====================
+
+        private string GetMyRoleInCurrentClass()
+        {
+            using (var db = new DataClasses1DataContext())
+            {
+                var role = db.UserClassrooms
+                    .Where(x => x.UserId == AppSession.CurrentUserId
+                             && x.ClassId == AppSession.CurrentClassId
+                             && x.IsActive)
+                    .Select(x => x.Role)
+                    .FirstOrDefault();
+
+                return string.IsNullOrWhiteSpace(role) ? "Member" : role;
+            }
+        }
+
+        private bool CanManage(string role)
+        {
+            return role == "Owner" || role == "Admin";
+        }
+
+        private bool EnsureCanManage()
+        {
+            var role = GetMyRoleInCurrentClass();
+            if (!CanManage(role))
+            {
+                MessageBox.Show("Bạn không có quyền thao tác trong lớp này (chỉ Owner/Admin).");
+                return false;
+            }
+            return true;
+        }
+
+        private void ApplyPermissions()
+        {
+            var role = GetMyRoleInCurrentClass();
+            var canManage = CanManage(role);
+
+            // Member chỉ xem
+            btnNewFee.Enabled = canManage;
+            btnOpenPayments.Enabled = canManage;     // nếu muốn member được xem thì set true
+            btnAddExpense.Enabled = canManage;
+            btnManageExpenses.Enabled = canManage;
+
+            btnAddMember.Enabled = canManage;
+            btnEditMember.Enabled = canManage;
+            btnDeleteMember.Enabled = canManage;
+
+            // vẫn cho đổi lớp
+            btnChangeClass.Enabled = true;
+        }
+
+        // =======================================================
 
         private void SetupGrid()
         {
@@ -70,18 +118,21 @@ namespace QuyLopWinform
         {
             try
             {
-                // ✅ mỗi lần reload đều sync để đổi lớp ăn ngay
                 SyncSessionToLocal();
 
                 if (_currentUser == null)
                     throw new Exception("Không tìm thấy thông tin user hiện tại.");
+
+                // ✅ apply quyền trước (để disable nút sớm)
+                ApplyPermissions();
 
                 using (var db = new DataClasses1DataContext())
                 {
                     // Title + class name
                     var cls = db.Classrooms.FirstOrDefault(x => x.ClassId == _currentClassId);
                     var className = cls?.ClassName ?? $"ClassId {_currentClassId}";
-                    Text = $"Xin chào: {_currentUser.FullName} | Lớp: {className} (ID: {_currentClassId})";
+                    var role = GetMyRoleInCurrentClass();
+                    Text = $"Xin chào: {_currentUser.FullName} | Lớp: {className} (ID: {_currentClassId}) | Role: {role}";
 
                     // 1) Load members
                     var members = db.ClassMembers
@@ -165,18 +216,12 @@ namespace QuyLopWinform
             cboFeeCycles.ValueMember = "FeeCycleId";
             cboFeeCycles.DataSource = list;
 
-            btnOpenPayments.Enabled = list.Count > 0;
+            // ✅ nếu member thì ApplyPermissions() sẽ disable
+            btnOpenPayments.Enabled = list.Count > 0 && btnOpenPayments.Enabled;
         }
 
-        private static string FormatVnd(decimal value)
-        {
-            return string.Format("{0:n0} đ", value);
-        }
-
-        private static string FormatVnd(int value)
-        {
-            return string.Format("{0:n0} đ", value);
-        }
+        private static string FormatVnd(decimal value) => string.Format("{0:n0} đ", value);
+        private static string FormatVnd(int value) => string.Format("{0:n0} đ", value);
 
         private int? GetSelectedMemberId()
         {
@@ -190,6 +235,8 @@ namespace QuyLopWinform
 
         private void btnAddMember_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             using (var f = new FrmMemberEdit())
             {
                 if (f.ShowDialog() != DialogResult.OK) return;
@@ -217,6 +264,8 @@ namespace QuyLopWinform
 
         private void btnEditMember_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             var id = GetSelectedMemberId();
             if (id == null)
             {
@@ -251,6 +300,8 @@ namespace QuyLopWinform
 
         private void btnDeleteMember_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             var id = GetSelectedMemberId();
             if (id == null)
             {
@@ -279,9 +330,11 @@ namespace QuyLopWinform
             ReloadAll();
         }
 
-        // ===== Khoản thu: Tạo khoản thu =====
+        // ===== Khoản thu =====
         private void btnNewFee_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             using (var f = new FrmFeeCycleAdd())
             {
                 if (f.ShowDialog() != DialogResult.OK) return;
@@ -330,6 +383,8 @@ namespace QuyLopWinform
 
         private void btnOpenPayments_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             if (cboFeeCycles.SelectedValue == null)
             {
                 MessageBox.Show("Chọn 1 khoản thu trước.");
@@ -361,8 +416,11 @@ namespace QuyLopWinform
             ReloadAll();
         }
 
+        // ===== Khoản chi =====
         private void btnAddExpense_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             using (var f = new FrmExpenseAdd())
             {
                 if (f.ShowDialog() != DialogResult.OK) return;
@@ -387,6 +445,8 @@ namespace QuyLopWinform
 
         private void btnManageExpenses_Click(object sender, EventArgs e)
         {
+            if (!EnsureCanManage()) return;
+
             using (var f = new FrmExpenses(_currentClassId))
             {
                 f.ShowDialog();
@@ -406,7 +466,7 @@ namespace QuyLopWinform
                 AppSession.CurrentClassId = f.SelectedClassId.Value;
             }
 
-            ReloadAll(); // vì ReloadAll đã sync session => classId đổi chắc chắn
+            ReloadAll();
         }
 
         // event stub giữ lại cho designer
@@ -419,5 +479,39 @@ namespace QuyLopWinform
         private void lblTotalOut_Click(object sender, EventArgs e) { }
         private void groupBox1_Enter(object sender, EventArgs e) { }
         private void groupBox2_Enter(object sender, EventArgs e) { }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var ok = MessageBox.Show("Bạn muốn đăng xuất?", "Xác nhận",
+        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (ok != DialogResult.Yes) return;
+
+            // clear session
+            AppSession.Clear();
+
+            // Ẩn main trước để tránh nháy UI
+            Hide();
+
+            using (var login = new FrmLogin())
+            {
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    // Login đã set AppSession.CurrentUserId/CurrentClassId
+                    // reset state trong main và load lại
+                    _currentUser = null;
+                    _currentClassId = 0;
+
+                    SyncSessionToLocal();
+                    ReloadAll();
+
+                    Show();
+                    return;
+                }
+            }
+
+            // user bấm cancel ở login => thoát app
+            Close();
+        }
     }
 }
