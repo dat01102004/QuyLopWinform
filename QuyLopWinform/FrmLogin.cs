@@ -6,7 +6,7 @@ using LopFund.DAL;
 
 namespace QuyLopWinform
 {
-    public partial class FrmLogin : Form
+    public partial class FrmLogin : BaseForm
     {
         private readonly UserBLL _userBll = new UserBLL();
         private readonly ClassroomBLL _classBll = new ClassroomBLL();
@@ -18,14 +18,54 @@ namespace QuyLopWinform
         {
             InitializeComponent();
 
-            // tránh bị gắn event nhiều lần
+            SetupLoginUI();
+
             btnLogin.Click -= btnLogin_Click;
             btnLogin.Click += btnLogin_Click;
 
             btnRegister.Click -= btnRegister_Click;
             btnRegister.Click += btnRegister_Click;
-        }
 
+            this.AcceptButton = btnLogin;
+        }
+        private void SetupLoginUI()
+        {
+            this.Text = "Đăng nhập";
+            this.BackColor = System.Drawing.Color.FromArgb(244, 247, 251);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
+
+            btnLogin.BackColor = System.Drawing.Color.FromArgb(37, 99, 235);
+            btnLogin.ForeColor = System.Drawing.Color.White;
+            btnLogin.FlatStyle = FlatStyle.Flat;
+            btnLogin.FlatAppearance.BorderSize = 0;
+            btnLogin.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            btnLogin.Height = 38;
+            btnLogin.Width = 120;
+
+            btnRegister.BackColor = System.Drawing.Color.White;
+            btnRegister.ForeColor = System.Drawing.Color.FromArgb(37, 99, 235);
+            btnRegister.FlatStyle = FlatStyle.Flat;
+            btnRegister.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(37, 99, 235);
+            btnRegister.FlatAppearance.BorderSize = 1;
+            btnRegister.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            btnRegister.Height = 38;
+            btnRegister.Width = 110;
+
+            txtEmail.Font = new System.Drawing.Font("Segoe UI", 10F);
+            txtPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+
+            txtEmail.BorderStyle = BorderStyle.FixedSingle;
+            txtPassword.BorderStyle = BorderStyle.FixedSingle;
+
+            txtEmail.Width = 220;
+            txtPassword.Width = 220;
+
+            txtPassword.UseSystemPasswordChar = true;
+        }
         private void btnLogin_Click(object sender, EventArgs e)
         {
             var email = txtEmail.Text.Trim();
@@ -86,6 +126,26 @@ namespace QuyLopWinform
             {
                 f.ShowDialog();
             }
+        }
+
+        private void btnLogin_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
