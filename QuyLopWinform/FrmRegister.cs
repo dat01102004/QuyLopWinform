@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using LopFund.BLL;
 
 namespace QuyLopWinform
 {
-    public partial class FrmRegister : Form
+    public partial class FrmRegister : BaseForm
     {
         private readonly UserBLL _userBll = new UserBLL();
 
         public FrmRegister()
         {
             InitializeComponent();
+
+            SetupRegisterUI();
 
             // mask password
             txtPassword.UseSystemPasswordChar = true;
@@ -22,6 +25,54 @@ namespace QuyLopWinform
 
             btnCancel.Click -= btnCancel_Click;
             btnCancel.Click += btnCancel_Click;
+
+            this.AcceptButton = btnRegister;
+            this.CancelButton = btnCancel;
+        }
+
+        private void SetupRegisterUI()
+        {
+            this.Text = "Đăng ký";
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.ShowInTaskbar = false;
+            this.BackColor = Color.FromArgb(244, 247, 251);
+            this.Font = new Font("Segoe UI", 10F);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+
+            btnRegister.BackColor = Color.FromArgb(37, 99, 235);
+            btnRegister.ForeColor = Color.White;
+            btnRegister.FlatStyle = FlatStyle.Flat;
+            btnRegister.FlatAppearance.BorderSize = 0;
+            btnRegister.Font = new Font("Segoe UI Semibold", 10F);
+            btnRegister.Height = 38;
+            btnRegister.Width = 120;
+            btnRegister.Cursor = Cursors.Hand;
+            btnRegister.UseVisualStyleBackColor = false;
+
+            btnCancel.BackColor = Color.White;
+            btnCancel.ForeColor = Color.FromArgb(37, 99, 235);
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.FlatAppearance.BorderColor = Color.FromArgb(37, 99, 235);
+            btnCancel.FlatAppearance.BorderSize = 1;
+            btnCancel.Font = new Font("Segoe UI Semibold", 10F);
+            btnCancel.Height = 38;
+            btnCancel.Width = 90;
+            btnCancel.Cursor = Cursors.Hand;
+            btnCancel.UseVisualStyleBackColor = false;
+
+            txtFullName.Font = new Font("Segoe UI", 10F);
+            txtEmail.Font = new Font("Segoe UI", 10F);
+            txtPhone.Font = new Font("Segoe UI", 10F);
+            txtPassword.Font = new Font("Segoe UI", 10F);
+            txtConfirm.Font = new Font("Segoe UI", 10F);
+
+            txtFullName.BorderStyle = BorderStyle.FixedSingle;
+            txtEmail.BorderStyle = BorderStyle.FixedSingle;
+            txtPhone.BorderStyle = BorderStyle.FixedSingle;
+            txtPassword.BorderStyle = BorderStyle.FixedSingle;
+            txtConfirm.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -83,27 +134,22 @@ namespace QuyLopWinform
 
         private void txtFullName_TextChanged_1(object sender, EventArgs e)
         {
-
         }
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void txtPhone_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void txtConfirm_TextChanged(object sender, EventArgs e)
         {
-
         }
     }
 }

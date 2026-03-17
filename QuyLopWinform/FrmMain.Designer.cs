@@ -83,7 +83,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 39);
+            this.label1.Location = new System.Drawing.Point(6, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 28);
             this.label1.TabIndex = 1;
@@ -146,9 +146,9 @@
             // 
             // btnAddMember
             // 
-            this.btnAddMember.Location = new System.Drawing.Point(396, 415);
+            this.btnAddMember.Location = new System.Drawing.Point(396, 404);
             this.btnAddMember.Name = "btnAddMember";
-            this.btnAddMember.Size = new System.Drawing.Size(75, 23);
+            this.btnAddMember.Size = new System.Drawing.Size(117, 34);
             this.btnAddMember.TabIndex = 5;
             this.btnAddMember.Text = "Thêm";
             this.btnAddMember.UseVisualStyleBackColor = true;
@@ -156,9 +156,9 @@
             // 
             // btnEditMember
             // 
-            this.btnEditMember.Location = new System.Drawing.Point(560, 415);
+            this.btnEditMember.Location = new System.Drawing.Point(544, 404);
             this.btnEditMember.Name = "btnEditMember";
-            this.btnEditMember.Size = new System.Drawing.Size(75, 23);
+            this.btnEditMember.Size = new System.Drawing.Size(108, 34);
             this.btnEditMember.TabIndex = 6;
             this.btnEditMember.Text = "Sửa";
             this.btnEditMember.UseVisualStyleBackColor = true;
@@ -166,9 +166,9 @@
             // 
             // btnDeleteMember
             // 
-            this.btnDeleteMember.Location = new System.Drawing.Point(702, 415);
+            this.btnDeleteMember.Location = new System.Drawing.Point(675, 404);
             this.btnDeleteMember.Name = "btnDeleteMember";
-            this.btnDeleteMember.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteMember.Size = new System.Drawing.Size(102, 34);
             this.btnDeleteMember.TabIndex = 7;
             this.btnDeleteMember.Text = "Xoá";
             this.btnDeleteMember.UseVisualStyleBackColor = true;
@@ -185,9 +185,9 @@
             // 
             // btnNewFee
             // 
-            this.btnNewFee.Location = new System.Drawing.Point(6, 59);
+            this.btnNewFee.Location = new System.Drawing.Point(8, 59);
             this.btnNewFee.Name = "btnNewFee";
-            this.btnNewFee.Size = new System.Drawing.Size(105, 23);
+            this.btnNewFee.Size = new System.Drawing.Size(143, 30);
             this.btnNewFee.TabIndex = 8;
             this.btnNewFee.Text = "Tạo Khoản Thu";
             this.btnNewFee.UseVisualStyleBackColor = true;
@@ -195,10 +195,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.groupBox1.Controls.Add(this.cboFeeCycles);
             this.groupBox1.Controls.Add(this.btnOpenPayments);
             this.groupBox1.Controls.Add(this.btnNewFee);
-            this.groupBox1.Location = new System.Drawing.Point(12, 222);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.groupBox1.Location = new System.Drawing.Point(12, 205);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(316, 95);
             this.groupBox1.TabIndex = 10;
@@ -211,15 +213,15 @@
             this.cboFeeCycles.FormattingEnabled = true;
             this.cboFeeCycles.Location = new System.Drawing.Point(6, 19);
             this.cboFeeCycles.Name = "cboFeeCycles";
-            this.cboFeeCycles.Size = new System.Drawing.Size(304, 21);
+            this.cboFeeCycles.Size = new System.Drawing.Size(304, 24);
             this.cboFeeCycles.TabIndex = 10;
             this.cboFeeCycles.SelectedIndexChanged += new System.EventHandler(this.cboFeeCycles_SelectedIndexChanged);
             // 
             // btnOpenPayments
             // 
-            this.btnOpenPayments.Location = new System.Drawing.Point(150, 59);
+            this.btnOpenPayments.Location = new System.Drawing.Point(204, 59);
             this.btnOpenPayments.Name = "btnOpenPayments";
-            this.btnOpenPayments.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenPayments.Size = new System.Drawing.Size(106, 30);
             this.btnOpenPayments.TabIndex = 9;
             this.btnOpenPayments.Text = "Thu Tiền";
             this.btnOpenPayments.UseVisualStyleBackColor = true;
@@ -227,11 +229,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.groupBox2.Controls.Add(this.btnManageExpenses);
             this.groupBox2.Controls.Add(this.btnAddExpense);
-            this.groupBox2.Location = new System.Drawing.Point(12, 341);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.groupBox2.Location = new System.Drawing.Point(12, 327);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(316, 48);
+            this.groupBox2.Size = new System.Drawing.Size(316, 71);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Khoản chi";
@@ -239,9 +243,9 @@
             // 
             // btnManageExpenses
             // 
-            this.btnManageExpenses.Location = new System.Drawing.Point(150, 19);
+            this.btnManageExpenses.Location = new System.Drawing.Point(150, 32);
             this.btnManageExpenses.Name = "btnManageExpenses";
-            this.btnManageExpenses.Size = new System.Drawing.Size(121, 23);
+            this.btnManageExpenses.Size = new System.Drawing.Size(149, 33);
             this.btnManageExpenses.TabIndex = 1;
             this.btnManageExpenses.Text = "QL khoản chi";
             this.btnManageExpenses.UseVisualStyleBackColor = true;
@@ -249,9 +253,9 @@
             // 
             // btnAddExpense
             // 
-            this.btnAddExpense.Location = new System.Drawing.Point(11, 19);
+            this.btnAddExpense.Location = new System.Drawing.Point(8, 32);
             this.btnAddExpense.Name = "btnAddExpense";
-            this.btnAddExpense.Size = new System.Drawing.Size(75, 23);
+            this.btnAddExpense.Size = new System.Drawing.Size(112, 33);
             this.btnAddExpense.TabIndex = 0;
             this.btnAddExpense.Text = "Chi tiền";
             this.btnAddExpense.UseVisualStyleBackColor = true;
@@ -269,9 +273,9 @@
             // 
             // btnLogout
             // 
-            this.btnLogout.Location = new System.Drawing.Point(12, 424);
+            this.btnLogout.Location = new System.Drawing.Point(12, 416);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(75, 23);
+            this.btnLogout.Size = new System.Drawing.Size(99, 31);
             this.btnLogout.TabIndex = 13;
             this.btnLogout.Text = "Đăng Xuất";
             this.btnLogout.UseVisualStyleBackColor = true;
@@ -281,6 +285,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnChangeClass);

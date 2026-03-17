@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
 using LopFund.BLL;
 using LopFund.DAL;
@@ -28,35 +28,40 @@ namespace QuyLopWinform
 
             this.AcceptButton = btnLogin;
         }
+
         private void SetupLoginUI()
         {
             this.Text = "Đăng nhập";
-            this.BackColor = System.Drawing.Color.FromArgb(244, 247, 251);
+            this.BackColor = Color.FromArgb(244, 247, 251);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.Font = new Font("Segoe UI", 10F);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = true;
 
-            btnLogin.BackColor = System.Drawing.Color.FromArgb(37, 99, 235);
-            btnLogin.ForeColor = System.Drawing.Color.White;
+            btnLogin.BackColor = Color.FromArgb(37, 99, 235);
+            btnLogin.ForeColor = Color.White;
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.FlatAppearance.BorderSize = 0;
-            btnLogin.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            btnLogin.Font = new Font("Segoe UI Semibold", 10F);
             btnLogin.Height = 38;
             btnLogin.Width = 120;
+            btnLogin.Cursor = Cursors.Hand;
+            btnLogin.UseVisualStyleBackColor = false;
 
-            btnRegister.BackColor = System.Drawing.Color.White;
-            btnRegister.ForeColor = System.Drawing.Color.FromArgb(37, 99, 235);
+            btnRegister.BackColor = Color.White;
+            btnRegister.ForeColor = Color.FromArgb(37, 99, 235);
             btnRegister.FlatStyle = FlatStyle.Flat;
-            btnRegister.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(37, 99, 235);
+            btnRegister.FlatAppearance.BorderColor = Color.FromArgb(37, 99, 235);
             btnRegister.FlatAppearance.BorderSize = 1;
-            btnRegister.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
+            btnRegister.Font = new Font("Segoe UI Semibold", 10F);
             btnRegister.Height = 38;
             btnRegister.Width = 110;
+            btnRegister.Cursor = Cursors.Hand;
+            btnRegister.UseVisualStyleBackColor = false;
 
-            txtEmail.Font = new System.Drawing.Font("Segoe UI", 10F);
-            txtPassword.Font = new System.Drawing.Font("Segoe UI", 10F);
+            txtEmail.Font = new Font("Segoe UI", 10F);
+            txtPassword.Font = new Font("Segoe UI", 10F);
 
             txtEmail.BorderStyle = BorderStyle.FixedSingle;
             txtPassword.BorderStyle = BorderStyle.FixedSingle;
@@ -66,6 +71,7 @@ namespace QuyLopWinform
 
             txtPassword.UseSystemPasswordChar = true;
         }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             var email = txtEmail.Text.Trim();
@@ -118,34 +124,53 @@ namespace QuyLopWinform
                 MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void FrmLogin_Load(object sender, EventArgs e) { }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+        }
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            using (var f = new FrmRegister())
+            this.Hide();
+
+            try
             {
-                f.ShowDialog();
+                using (var f = new FrmRegister())
+                {
+                    var result = f.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        txtPassword.Clear();
+                        txtEmail.Focus();
+                    }
+                }
+            }
+            finally
+            {
+                this.Show();
+                this.Activate();
             }
         }
 
         private void btnLogin_Click_1(object sender, EventArgs e)
         {
-
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void label3_Click(object sender, EventArgs e)
         {
-
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
+        }
 
+        private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

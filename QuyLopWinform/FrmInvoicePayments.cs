@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using LopFund.DAL;
 
 namespace QuyLopWinform
 {
-    public partial class FrmInvoicePayments : Form
+    public partial class FrmInvoicePayments : BaseForm
     {
         private readonly int _classId;
         private readonly int _invoiceId;
@@ -18,6 +19,17 @@ namespace QuyLopWinform
         private decimal _expectedEach = 0m;
         private int _memberCount = 0;
 
+        private Label lblHeaderTitle;
+        private Label lblHeaderSubTitle;
+        private GroupBox grpPayments;
+        private GroupBox grpSummary;
+
+        private Label lblFeeTitleCaption;
+        private Label lblExpectedEachCaption;
+        private Label lblExpectedTotalCaption;
+        private Label lblReceivedCaption;
+        private Label lblRemainingCaption;
+
         public FrmInvoicePayments(int classId, int invoiceId)
         {
             InitializeComponent();
@@ -25,12 +37,268 @@ namespace QuyLopWinform
             _classId = classId;
             _invoiceId = invoiceId;
 
+            BuildExtraUI();
             SetupGrid();
+            SetupPaymentUI();
+            WireExtraEvents();
 
             // Gắn event bằng code để khỏi lệ thuộc Designer
             dgvPay.CurrentCellDirtyStateChanged += dgvPay_CurrentCellDirtyStateChanged;
             dgvPay.CellValueChanged += dgvPay_CellValueChanged;
             dgvPay.DataError += dgvPay_DataError;
+        }
+
+        private void BuildExtraUI()
+        {
+            lblHeaderTitle = new Label();
+            lblHeaderSubTitle = new Label();
+            grpPayments = new GroupBox();
+            grpSummary = new GroupBox();
+
+            lblFeeTitleCaption = new Label();
+            lblExpectedEachCaption = new Label();
+            lblExpectedTotalCaption = new Label();
+            lblReceivedCaption = new Label();
+            lblRemainingCaption = new Label();
+
+            lblHeaderTitle.AutoSize = true;
+            lblHeaderTitle.Text = "Quản lý khoản thu";
+            lblHeaderTitle.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
+            lblHeaderTitle.ForeColor = Color.FromArgb(15, 23, 42);
+            lblHeaderTitle.BackColor = Color.Transparent;
+
+            lblHeaderSubTitle.AutoSize = true;
+            lblHeaderSubTitle.Text = "Đánh dấu thành viên đã nộp và theo dõi tổng số tiền đã thu";
+            lblHeaderSubTitle.Font = new Font("Segoe UI", 9.5F);
+            lblHeaderSubTitle.ForeColor = Color.FromArgb(100, 116, 139);
+            lblHeaderSubTitle.BackColor = Color.Transparent;
+
+            grpPayments.Text = "Danh sách nộp tiền";
+            grpPayments.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
+            grpPayments.ForeColor = Color.FromArgb(31, 41, 55);
+            grpPayments.BackColor = Color.White;
+            grpPayments.Padding = new Padding(10);
+
+            grpSummary.Text = "Tổng quan khoản thu";
+            grpSummary.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
+            grpSummary.ForeColor = Color.FromArgb(31, 41, 55);
+            grpSummary.BackColor = Color.White;
+            grpSummary.Padding = new Padding(10);
+
+            InitCaptionLabel(lblFeeTitleCaption, "Tên khoản thu");
+            InitCaptionLabel(lblExpectedEachCaption, "Mức thu mỗi người");
+            InitCaptionLabel(lblExpectedTotalCaption, "Tổng phải thu");
+            InitCaptionLabel(lblReceivedCaption, "Đã thu");
+            InitCaptionLabel(lblRemainingCaption, "Còn lại");
+
+            this.Controls.Add(lblHeaderTitle);
+            this.Controls.Add(lblHeaderSubTitle);
+            this.Controls.Add(grpPayments);
+            this.Controls.Add(grpSummary);
+
+            grpSummary.Controls.Add(lblFeeTitleCaption);
+            grpSummary.Controls.Add(lblExpectedEachCaption);
+            grpSummary.Controls.Add(lblExpectedTotalCaption);
+            grpSummary.Controls.Add(lblReceivedCaption);
+            grpSummary.Controls.Add(lblRemainingCaption);
+
+            lblHeaderTitle.BringToFront();
+            lblHeaderSubTitle.BringToFront();
+        }
+
+        private void InitCaptionLabel(Label lbl, string text)
+        {
+            lbl.AutoSize = true;
+            lbl.Text = text;
+            lbl.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lbl.ForeColor = Color.FromArgb(100, 116, 139);
+            lbl.BackColor = Color.Transparent;
+        }
+
+        private void SetupPaymentUI()
+        {
+            this.Text = "Quản lý khoản thu";
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
+            this.BackColor = Color.FromArgb(244, 247, 251);
+            this.Font = new Font("Segoe UI", 10F);
+            this.ClientSize = new Size(1180, 720);
+
+            StyleValueLabel(lblTitle, false);
+            StyleValueLabel(lblExpectedEach, false);
+            StyleValueLabel(lblExpectedTotal, false);
+            StyleValueLabel(lblReceived, true);
+            StyleValueLabel(lblRemaining, true);
+
+            StylePrimaryButton(btnCheckAll, "Check all");
+            StyleSecondaryButton(btnUncheckAll, "Bỏ chọn hết");
+            StylePrimaryButton(btnSave, "Lưu");
+            StyleSecondaryButton(btnClose, "Đóng");
+
+            HideOldCaptionLabels();
+        }
+
+        private void WireExtraEvents()
+        {
+            this.Shown += FrmInvoicePayments_Shown;
+            this.Resize += FrmInvoicePayments_Resize;
+        }
+
+        private void FrmInvoicePayments_Shown(object sender, EventArgs e)
+        {
+            ArrangeLayout();
+        }
+
+        private void FrmInvoicePayments_Resize(object sender, EventArgs e)
+        {
+            ArrangeLayout();
+        }
+
+        private void ArrangeLayout()
+        {
+            int margin = 22;
+
+            lblHeaderTitle.Location = new Point(margin, 18);
+            lblHeaderSubTitle.Location = new Point(margin, 50);
+
+            grpPayments.Location = new Point(margin, 84);
+            grpPayments.Size = new Size(this.ClientSize.Width - margin * 2, 420);
+
+            grpSummary.Location = new Point(margin, grpPayments.Bottom + 18);
+            grpSummary.Size = new Size(this.ClientSize.Width - margin * 2, 150);
+
+            EnsureParent(dgvPay, grpPayments);
+            dgvPay.Location = new Point(16, 34);
+            dgvPay.Size = new Size(grpPayments.ClientSize.Width - 32, grpPayments.ClientSize.Height - 50);
+
+            EnsureParent(lblTitle, grpSummary);
+            EnsureParent(lblExpectedEach, grpSummary);
+            EnsureParent(lblExpectedTotal, grpSummary);
+            EnsureParent(lblReceived, grpSummary);
+            EnsureParent(lblRemaining, grpSummary);
+
+            EnsureParent(btnCheckAll, grpSummary);
+            EnsureParent(btnUncheckAll, grpSummary);
+            EnsureParent(btnSave, grpSummary);
+            EnsureParent(btnClose, grpSummary);
+
+            int leftX = 18;
+            int valueX = 170;
+
+            lblFeeTitleCaption.Location = new Point(leftX, 32);
+            lblTitle.Location = new Point(valueX, 28);
+
+            lblExpectedEachCaption.Location = new Point(leftX, 60);
+            lblExpectedEach.Location = new Point(valueX, 56);
+
+            lblExpectedTotalCaption.Location = new Point(leftX, 88);
+            lblExpectedTotal.Location = new Point(valueX, 84);
+
+            lblReceivedCaption.Location = new Point(leftX, 116);
+            lblReceived.Location = new Point(valueX, 112);
+
+            lblRemainingCaption.Location = new Point(380, 32);
+            lblRemaining.Location = new Point(460, 28);
+
+            btnCheckAll.Size = new Size(130, 40);
+            btnUncheckAll.Size = new Size(130, 40);
+            btnSave.Size = new Size(120, 40);
+            btnClose.Size = new Size(120, 40);
+
+            int rightMargin = 18;
+            btnClose.Location = new Point(grpSummary.ClientSize.Width - btnClose.Width - rightMargin, 86);
+            btnSave.Location = new Point(btnClose.Left - btnSave.Width - 14, 86);
+
+            btnUncheckAll.Location = new Point(grpSummary.ClientSize.Width - btnUncheckAll.Width - rightMargin, 28);
+            btnCheckAll.Location = new Point(btnUncheckAll.Left - btnCheckAll.Width - 14, 28);
+        }
+
+        private void EnsureParent(Control child, Control newParent)
+        {
+            if (child == null || newParent == null) return;
+            if (child.Parent == newParent) return;
+
+            Control oldParent = child.Parent;
+            if (oldParent != null)
+                oldParent.Controls.Remove(child);
+
+            newParent.Controls.Add(child);
+        }
+
+        private IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                foreach (Control child in GetAllControls(c))
+                    yield return child;
+
+                yield return c;
+            }
+        }
+
+        private void HideOldCaptionLabels()
+        {
+            foreach (var lbl in GetAllControls(this).OfType<Label>())
+            {
+                if (lbl == lblHeaderTitle || lbl == lblHeaderSubTitle ||
+                    lbl == lblFeeTitleCaption || lbl == lblExpectedEachCaption ||
+                    lbl == lblExpectedTotalCaption || lbl == lblReceivedCaption ||
+                    lbl == lblRemainingCaption || lbl == lblTitle ||
+                    lbl == lblExpectedEach || lbl == lblExpectedTotal ||
+                    lbl == lblReceived || lbl == lblRemaining)
+                    continue;
+
+                string t = (lbl.Text ?? string.Empty).Trim();
+                if (string.IsNullOrWhiteSpace(t)) continue;
+
+                if (t.IndexOf("Tên khoản Thu", StringComparison.CurrentCultureIgnoreCase) >= 0 ||
+                    t.IndexOf("Số Tiền", StringComparison.CurrentCultureIgnoreCase) >= 0 ||
+                    t.IndexOf("Tổng chưa đóng", StringComparison.CurrentCultureIgnoreCase) >= 0 ||
+                    t.IndexOf("Đã đóng", StringComparison.CurrentCultureIgnoreCase) >= 0 ||
+                    t.IndexOf("Còn Lại", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                {
+                    lbl.Visible = false;
+                }
+            }
+        }
+
+        private void StyleValueLabel(Label lbl, bool highlight)
+        {
+            lbl.AutoSize = true;
+            lbl.Font = highlight
+                ? new Font("Segoe UI Semibold", 14F, FontStyle.Bold)
+                : new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            lbl.ForeColor = highlight
+                ? Color.FromArgb(37, 99, 235)
+                : Color.FromArgb(31, 41, 55);
+            lbl.BackColor = Color.Transparent;
+        }
+
+        private void StylePrimaryButton(Button btn, string text)
+        {
+            btn.Text = text;
+            btn.BackColor = Color.FromArgb(37, 99, 235);
+            btn.ForeColor = Color.White;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Font = new Font("Segoe UI Semibold", 10F);
+            btn.Cursor = Cursors.Hand;
+            btn.UseVisualStyleBackColor = false;
+        }
+
+        private void StyleSecondaryButton(Button btn, string text)
+        {
+            btn.Text = text;
+            btn.BackColor = Color.White;
+            btn.ForeColor = Color.FromArgb(37, 99, 235);
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderColor = Color.FromArgb(37, 99, 235);
+            btn.FlatAppearance.BorderSize = 1;
+            btn.Font = new Font("Segoe UI Semibold", 10F);
+            btn.Cursor = Cursors.Hand;
+            btn.UseVisualStyleBackColor = false;
         }
 
         private void FrmInvoicePayments_Load(object sender, EventArgs e)
@@ -46,6 +314,20 @@ namespace QuyLopWinform
             dgvPay.AllowUserToDeleteRows = false;
             dgvPay.MultiSelect = false;
             dgvPay.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvPay.RowHeadersVisible = false;
+            dgvPay.BackgroundColor = Color.White;
+            dgvPay.BorderStyle = BorderStyle.FixedSingle;
+            dgvPay.EnableHeadersVisualStyles = false;
+            dgvPay.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dgvPay.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(37, 99, 235);
+            dgvPay.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvPay.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10F);
+            dgvPay.ColumnHeadersHeight = 36;
+            dgvPay.DefaultCellStyle.SelectionBackColor = Color.FromArgb(219, 234, 254);
+            dgvPay.DefaultCellStyle.SelectionForeColor = Color.FromArgb(17, 24, 39);
+            dgvPay.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvPay.RowTemplate.Height = 30;
+            dgvPay.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void LoadData()
@@ -103,40 +385,50 @@ namespace QuyLopWinform
 
         private void ConfigureGridAfterBind()
         {
-            // Ẩn cột kỹ thuật
             HideIfExists("PaymentId");
             HideIfExists("MemberId");
 
-            // Header tiếng Việt cho dễ nhìn
             if (dgvPay.Columns["Paid"] != null)
+            {
                 dgvPay.Columns["Paid"].HeaderText = "Đã nộp";
+                dgvPay.Columns["Paid"].Width = 80;
+                dgvPay.Columns["Paid"].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            }
 
             if (dgvPay.Columns["FullName"] != null)
             {
                 dgvPay.Columns["FullName"].HeaderText = "Họ tên";
                 dgvPay.Columns["FullName"].ReadOnly = true;
                 dgvPay.Columns["FullName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPay.Columns["FullName"].FillWeight = 34;
             }
 
             if (dgvPay.Columns["Phone"] != null)
             {
                 dgvPay.Columns["Phone"].HeaderText = "SĐT";
                 dgvPay.Columns["Phone"].ReadOnly = true;
-                dgvPay.Columns["Phone"].Width = 120;
+                dgvPay.Columns["Phone"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPay.Columns["Phone"].FillWeight = 18;
             }
 
             if (dgvPay.Columns["AmountPaid"] != null)
             {
                 dgvPay.Columns["AmountPaid"].HeaderText = "Số tiền";
                 dgvPay.Columns["AmountPaid"].DefaultCellStyle.Format = "N0";
-                dgvPay.Columns["AmountPaid"].Width = 120;
+                dgvPay.Columns["AmountPaid"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgvPay.Columns["AmountPaid"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvPay.Columns["AmountPaid"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPay.Columns["AmountPaid"].FillWeight = 20;
             }
 
             if (dgvPay.Columns["PaidAt"] != null)
             {
                 dgvPay.Columns["PaidAt"].HeaderText = "Ngày nộp";
                 dgvPay.Columns["PaidAt"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
-                dgvPay.Columns["PaidAt"].Width = 150;
+                dgvPay.Columns["PaidAt"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvPay.Columns["PaidAt"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvPay.Columns["PaidAt"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgvPay.Columns["PaidAt"].FillWeight = 28;
             }
         }
 
@@ -163,11 +455,9 @@ namespace QuyLopWinform
             {
                 row.Paid = true;
 
-                // Nếu chưa có ngày nộp thì set hiện tại
                 if (!row.PaidAt.HasValue)
                     row.PaidAt = DateTime.Now;
 
-                // Nếu số tiền <= 0 thì set theo mức phải nộp
                 if (row.AmountPaid <= 0)
                     row.AmountPaid = _expectedEach;
             }
@@ -181,8 +471,6 @@ namespace QuyLopWinform
             foreach (var row in _rows)
             {
                 row.Paid = false;
-                // Có thể giữ PaidAt/AmountPaid để tiện check lại, hoặc xoá đi
-                // row.PaidAt = null;
             }
 
             dgvPay.Refresh();
@@ -219,16 +507,12 @@ namespace QuyLopWinform
                                 db.InvoicePayments.InsertOnSubmit(p);
                             }
 
-                            // DB của bạn khả năng cao là INT -> phải convert
                             p.AmountPaid = Convert.ToInt32(row.AmountPaid);
-
-                            // Nếu cột PaidAt trong DB không cho null, set DateTime.Now
                             p.PaidAt = row.PaidAt ?? DateTime.Now;
                             p.Status = "Paid";
                         }
                         else
                         {
-                            // Bỏ tick => xoá payment record
                             if (p != null)
                                 db.InvoicePayments.DeleteOnSubmit(p);
                         }
@@ -253,7 +537,6 @@ namespace QuyLopWinform
             Close();
         }
 
-        // Khi click checkbox trong DataGridView, cần commit ngay để CellValueChanged chạy
         private void dgvPay_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
             if (dgvPay.IsCurrentCellDirty)
@@ -262,12 +545,10 @@ namespace QuyLopWinform
             }
         }
 
-        // Realtime update summary khi tick/uncheck hoặc sửa số tiền
         private void dgvPay_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-            // Nếu vừa tick Paid = true mà chưa có PaidAt => set hiện tại
             if (dgvPay.Columns[e.ColumnIndex].Name == "Paid")
             {
                 var row = dgvPay.Rows[e.RowIndex].DataBoundItem as PayRow;
@@ -284,7 +565,6 @@ namespace QuyLopWinform
 
         private void dgvPay_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            // Tránh văng lỗi khi nhập sai format ô số tiền / ngày
             e.ThrowException = false;
         }
 
@@ -300,17 +580,13 @@ namespace QuyLopWinform
             public DateTime? PaidAt { get; set; }
         }
 
-        // Các event rỗng để Designer không lỗi (nếu đã gắn)
+        // Các event rỗng để Designer không lỗi
         private void dgvPay_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void lblTitle_Click(object sender, EventArgs e) { }
         private void lblExpectedEach_Click(object sender, EventArgs e) { }
         private void lblExpectedTotal_Click(object sender, EventArgs e) { }
         private void lblReceived_Click(object sender, EventArgs e) { }
         private void lblRemaining_Click(object sender, EventArgs e) { }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void label5_Click(object sender, EventArgs e) { }
     }
 }

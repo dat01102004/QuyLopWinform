@@ -38,9 +38,10 @@
             // 
             // txtTitle
             // 
-            this.txtTitle.Location = new System.Drawing.Point(88, 36);
+            this.txtTitle.Location = new System.Drawing.Point(117, 44);
+            this.txtTitle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtTitle.Name = "txtTitle";
-            this.txtTitle.Size = new System.Drawing.Size(100, 20);
+            this.txtTitle.Size = new System.Drawing.Size(132, 22);
             this.txtTitle.TabIndex = 0;
             this.txtTitle.Text = "nội dung chi";
             // 
@@ -51,29 +52,32 @@
             0,
             0,
             0});
-            this.numAmount.Location = new System.Drawing.Point(88, 62);
+            this.numAmount.Location = new System.Drawing.Point(117, 76);
+            this.numAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.numAmount.Maximum = new decimal(new int[] {
             1000000000,
             0,
             0,
             0});
             this.numAmount.Name = "numAmount";
-            this.numAmount.Size = new System.Drawing.Size(120, 20);
+            this.numAmount.Size = new System.Drawing.Size(160, 22);
             this.numAmount.TabIndex = 1;
             this.numAmount.ThousandsSeparator = true;
             // 
             // dtpExpenseDate
             // 
-            this.dtpExpenseDate.Location = new System.Drawing.Point(28, 88);
+            this.dtpExpenseDate.Location = new System.Drawing.Point(37, 108);
+            this.dtpExpenseDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dtpExpenseDate.Name = "dtpExpenseDate";
-            this.dtpExpenseDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpExpenseDate.Size = new System.Drawing.Size(265, 22);
             this.dtpExpenseDate.TabIndex = 2;
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(28, 135);
+            this.btnSave.Location = new System.Drawing.Point(37, 166);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(100, 28);
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Lưu";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -81,9 +85,10 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(153, 135);
+            this.btnCancel.Location = new System.Drawing.Point(204, 166);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 28);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -91,14 +96,15 @@
             // 
             // FrmExpenseAdd
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 237);
+            this.ClientSize = new System.Drawing.Size(529, 381);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.dtpExpenseDate);
             this.Controls.Add(this.numAmount);
             this.Controls.Add(this.txtTitle);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmExpenseAdd";
             this.Text = "FrmExpenseAdd";
             ((System.ComponentModel.ISupportInitialize)(this.numAmount)).EndInit();
