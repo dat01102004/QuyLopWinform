@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using LopFund.DAL;
+using ClosedXML.Excel;
 
 namespace QuyLopWinform
 {
@@ -799,6 +800,121 @@ namespace QuyLopWinform
             }
 
             Close();
+        }
+
+        private void btnImportExcel_Click(object sender, EventArgs e)
+        {
+            if (!EnsureCanManage()) return;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "Chọn file Excel danh sách thành viên";
+                openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx";
+
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    int successCount = 0;
+                    int duplicateCount = 0;
+                    int errorCount = 0;
+                    List<string> errorRows = new List<string>();
+
+                    using (var workbook = new XLWorkbook(openFileDialog.FileName))
+                    {
+                        var worksheet = workbook.Worksheet(1);
+                        var usedRange = worksheet.RangeUsed();
+
+                        if (usedRange == null)
+                        {
+                            MessageBox.Show("File Excel không có dữ liệu.");
+                            return;
+                        }
+
+                        using (var db = new DataClasses1DataContext())
+                        {
+                            int lastRow = usedRange.RowCount();
+
+                            for (int row = 2; row <= lastRow; row++)
+                            {
+                                try
+                                {
+                                    string fullName = worksheet.Cell(row, 1).GetString().Trim();
+                                    string phone = worksheet.Cell(row, 2).GetString().Trim();
+                                    string note = worksheet.Cell(row, 3).GetString().Trim();
+
+                                    if (string.IsNullOrWhiteSpace(fullName))
+                                    {
+                                        errorCount++;
+                                        errorRows.Add($"Dòng {row}: Thiếu họ tên");
+                                        continue;
+                                    }
+
+                                    bool isDuplicate = db.ClassMembers.Any(m =>
+                                        m.ClassId == _currentClassId &&
+                                        m.IsActive == true &&
+                                        m.FullName.ToLower() == fullName.ToLower());
+
+                                    if (isDuplicate)
+                                    {
+                                        duplicateCount++;
+                                        continue;
+                                    }
+
+                                    var member = new ClassMember
+                                    {
+                                        ClassId = _currentClassId,
+                                        FullName = fullName,
+                                        Phone = phone,
+                                        Note = note,
+                                        JoinedAt = DateTime.Now,
+                                        MemberRole = "Member",
+                                        IsActive = true
+                                    };
+
+                                    db.ClassMembers.InsertOnSubmit(member);
+                                    successCount++;
+                                }
+                                catch (Exception exRow)
+                                {
+                                    errorCount++;
+                                    errorRows.Add($"Dòng {row}: {exRow.Message}");
+                                }
+                            }
+
+                            db.SubmitChanges();
+                        }
+                    }
+
+                    ReloadAll();
+
+                    string message =
+                        $"Import Excel hoàn tất!\n\n" +
+                        $"Thêm thành công: {successCount}\n" +
+                        $"Bị trùng, bỏ qua: {duplicateCount}\n" +
+                        $"Lỗi: {errorCount}";
+
+                    if (errorRows.Count > 0)
+                    {
+                        message += "\n\nChi tiết lỗi:\n" + string.Join("\n", errorRows.Take(10));
+
+                        if (errorRows.Count > 10)
+                            message += "\n...";
+                    }
+
+                    MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Lỗi import Excel: " + ex.Message,
+                        "Lỗi",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+            }
         }
     }
 }

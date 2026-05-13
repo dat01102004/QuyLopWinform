@@ -49,6 +49,7 @@
             this.btnAddExpense = new System.Windows.Forms.Button();
             this.btnChangeClass = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
+            this.btnImportExcel = new System.Windows.Forms.Button();
             this.grpSummary.SuspendLayout();
             this.grpMembers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMembers)).BeginInit();
@@ -61,9 +62,11 @@
             this.grpSummary.Controls.Add(this.lblBalance);
             this.grpSummary.Controls.Add(this.label1);
             this.grpSummary.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpSummary.Location = new System.Drawing.Point(12, 12);
+            this.grpSummary.Location = new System.Drawing.Point(14, 16);
+            this.grpSummary.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.grpSummary.Name = "grpSummary";
-            this.grpSummary.Size = new System.Drawing.Size(271, 79);
+            this.grpSummary.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpSummary.Size = new System.Drawing.Size(316, 103);
             this.grpSummary.TabIndex = 0;
             this.grpSummary.TabStop = false;
             this.grpSummary.Text = "Tổng Quan";
@@ -73,7 +76,8 @@
             // 
             this.lblBalance.AutoSize = true;
             this.lblBalance.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblBalance.Location = new System.Drawing.Point(106, 47);
+            this.lblBalance.Location = new System.Drawing.Point(124, 61);
+            this.lblBalance.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBalance.Name = "lblBalance";
             this.lblBalance.Size = new System.Drawing.Size(34, 20);
             this.lblBalance.TabIndex = 2;
@@ -83,7 +87,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 41);
+            this.label1.Location = new System.Drawing.Point(7, 54);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 28);
             this.label1.TabIndex = 1;
@@ -92,9 +97,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 112);
+            this.label2.Location = new System.Drawing.Point(19, 146);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.Size = new System.Drawing.Size(74, 19);
             this.label2.TabIndex = 4;
             this.label2.Text = "Tổng Thu: ";
             // 
@@ -102,7 +108,8 @@
             // 
             this.lblTotalIn.AutoSize = true;
             this.lblTotalIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalIn.Location = new System.Drawing.Point(82, 107);
+            this.lblTotalIn.Location = new System.Drawing.Point(96, 140);
+            this.lblTotalIn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalIn.Name = "lblTotalIn";
             this.lblTotalIn.Size = new System.Drawing.Size(29, 20);
             this.lblTotalIn.TabIndex = 1;
@@ -113,7 +120,8 @@
             // 
             this.lblTotalOut.AutoSize = true;
             this.lblTotalOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblTotalOut.Location = new System.Drawing.Point(82, 131);
+            this.lblTotalOut.Location = new System.Drawing.Point(96, 171);
+            this.lblTotalOut.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTotalOut.Name = "lblTotalOut";
             this.lblTotalOut.Size = new System.Drawing.Size(29, 20);
             this.lblTotalOut.TabIndex = 2;
@@ -123,9 +131,11 @@
             // grpMembers
             // 
             this.grpMembers.Controls.Add(this.dgvMembers);
-            this.grpMembers.Location = new System.Drawing.Point(396, 25);
+            this.grpMembers.Location = new System.Drawing.Point(462, 33);
+            this.grpMembers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.grpMembers.Name = "grpMembers";
-            this.grpMembers.Size = new System.Drawing.Size(381, 373);
+            this.grpMembers.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpMembers.Size = new System.Drawing.Size(444, 488);
             this.grpMembers.TabIndex = 3;
             this.grpMembers.TabStop = false;
             this.grpMembers.Text = "Thành Viên Lớp";
@@ -135,20 +145,22 @@
             // 
             this.dgvMembers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMembers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMembers.Location = new System.Drawing.Point(0, 28);
+            this.dgvMembers.Location = new System.Drawing.Point(0, 37);
+            this.dgvMembers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvMembers.MultiSelect = false;
             this.dgvMembers.Name = "dgvMembers";
             this.dgvMembers.ReadOnly = true;
             this.dgvMembers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMembers.Size = new System.Drawing.Size(381, 339);
+            this.dgvMembers.Size = new System.Drawing.Size(444, 443);
             this.dgvMembers.TabIndex = 4;
             this.dgvMembers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMembers_CellContentClick);
             // 
             // btnAddMember
             // 
-            this.btnAddMember.Location = new System.Drawing.Point(396, 404);
+            this.btnAddMember.Location = new System.Drawing.Point(462, 528);
+            this.btnAddMember.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAddMember.Name = "btnAddMember";
-            this.btnAddMember.Size = new System.Drawing.Size(117, 34);
+            this.btnAddMember.Size = new System.Drawing.Size(78, 44);
             this.btnAddMember.TabIndex = 5;
             this.btnAddMember.Text = "Thêm";
             this.btnAddMember.UseVisualStyleBackColor = true;
@@ -156,9 +168,10 @@
             // 
             // btnEditMember
             // 
-            this.btnEditMember.Location = new System.Drawing.Point(544, 404);
+            this.btnEditMember.Location = new System.Drawing.Point(562, 528);
+            this.btnEditMember.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnEditMember.Name = "btnEditMember";
-            this.btnEditMember.Size = new System.Drawing.Size(108, 34);
+            this.btnEditMember.Size = new System.Drawing.Size(73, 44);
             this.btnEditMember.TabIndex = 6;
             this.btnEditMember.Text = "Sửa";
             this.btnEditMember.UseVisualStyleBackColor = true;
@@ -166,9 +179,10 @@
             // 
             // btnDeleteMember
             // 
-            this.btnDeleteMember.Location = new System.Drawing.Point(675, 404);
+            this.btnDeleteMember.Location = new System.Drawing.Point(664, 528);
+            this.btnDeleteMember.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnDeleteMember.Name = "btnDeleteMember";
-            this.btnDeleteMember.Size = new System.Drawing.Size(102, 34);
+            this.btnDeleteMember.Size = new System.Drawing.Size(66, 44);
             this.btnDeleteMember.TabIndex = 7;
             this.btnDeleteMember.Text = "Xoá";
             this.btnDeleteMember.UseVisualStyleBackColor = true;
@@ -177,17 +191,19 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 138);
+            this.label3.Location = new System.Drawing.Point(19, 180);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.Size = new System.Drawing.Size(67, 19);
             this.label3.TabIndex = 5;
             this.label3.Text = "Tổng Chi:";
             // 
             // btnNewFee
             // 
-            this.btnNewFee.Location = new System.Drawing.Point(8, 59);
+            this.btnNewFee.Location = new System.Drawing.Point(9, 77);
+            this.btnNewFee.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnNewFee.Name = "btnNewFee";
-            this.btnNewFee.Size = new System.Drawing.Size(143, 30);
+            this.btnNewFee.Size = new System.Drawing.Size(167, 39);
             this.btnNewFee.TabIndex = 8;
             this.btnNewFee.Text = "Tạo Khoản Thu";
             this.btnNewFee.UseVisualStyleBackColor = true;
@@ -200,9 +216,11 @@
             this.groupBox1.Controls.Add(this.btnOpenPayments);
             this.groupBox1.Controls.Add(this.btnNewFee);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 205);
+            this.groupBox1.Location = new System.Drawing.Point(14, 268);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(316, 95);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(369, 124);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Khoản Thu";
@@ -211,17 +229,19 @@
             // cboFeeCycles
             // 
             this.cboFeeCycles.FormattingEnabled = true;
-            this.cboFeeCycles.Location = new System.Drawing.Point(6, 19);
+            this.cboFeeCycles.Location = new System.Drawing.Point(7, 25);
+            this.cboFeeCycles.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboFeeCycles.Name = "cboFeeCycles";
-            this.cboFeeCycles.Size = new System.Drawing.Size(304, 24);
+            this.cboFeeCycles.Size = new System.Drawing.Size(354, 24);
             this.cboFeeCycles.TabIndex = 10;
             this.cboFeeCycles.SelectedIndexChanged += new System.EventHandler(this.cboFeeCycles_SelectedIndexChanged);
             // 
             // btnOpenPayments
             // 
-            this.btnOpenPayments.Location = new System.Drawing.Point(204, 59);
+            this.btnOpenPayments.Location = new System.Drawing.Point(238, 77);
+            this.btnOpenPayments.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOpenPayments.Name = "btnOpenPayments";
-            this.btnOpenPayments.Size = new System.Drawing.Size(106, 30);
+            this.btnOpenPayments.Size = new System.Drawing.Size(124, 39);
             this.btnOpenPayments.TabIndex = 9;
             this.btnOpenPayments.Text = "Thu Tiền";
             this.btnOpenPayments.UseVisualStyleBackColor = true;
@@ -233,9 +253,11 @@
             this.groupBox2.Controls.Add(this.btnManageExpenses);
             this.groupBox2.Controls.Add(this.btnAddExpense);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.groupBox2.Location = new System.Drawing.Point(12, 327);
+            this.groupBox2.Location = new System.Drawing.Point(14, 428);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(316, 71);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Size = new System.Drawing.Size(369, 93);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Khoản chi";
@@ -243,9 +265,10 @@
             // 
             // btnManageExpenses
             // 
-            this.btnManageExpenses.Location = new System.Drawing.Point(150, 32);
+            this.btnManageExpenses.Location = new System.Drawing.Point(175, 42);
+            this.btnManageExpenses.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnManageExpenses.Name = "btnManageExpenses";
-            this.btnManageExpenses.Size = new System.Drawing.Size(149, 33);
+            this.btnManageExpenses.Size = new System.Drawing.Size(174, 43);
             this.btnManageExpenses.TabIndex = 1;
             this.btnManageExpenses.Text = "QL khoản chi";
             this.btnManageExpenses.UseVisualStyleBackColor = true;
@@ -253,9 +276,10 @@
             // 
             // btnAddExpense
             // 
-            this.btnAddExpense.Location = new System.Drawing.Point(8, 32);
+            this.btnAddExpense.Location = new System.Drawing.Point(9, 42);
+            this.btnAddExpense.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnAddExpense.Name = "btnAddExpense";
-            this.btnAddExpense.Size = new System.Drawing.Size(112, 33);
+            this.btnAddExpense.Size = new System.Drawing.Size(131, 43);
             this.btnAddExpense.TabIndex = 0;
             this.btnAddExpense.Text = "Chi tiền";
             this.btnAddExpense.UseVisualStyleBackColor = true;
@@ -263,9 +287,10 @@
             // 
             // btnChangeClass
             // 
-            this.btnChangeClass.Location = new System.Drawing.Point(305, 25);
+            this.btnChangeClass.Location = new System.Drawing.Point(356, 33);
+            this.btnChangeClass.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnChangeClass.Name = "btnChangeClass";
-            this.btnChangeClass.Size = new System.Drawing.Size(75, 23);
+            this.btnChangeClass.Size = new System.Drawing.Size(88, 30);
             this.btnChangeClass.TabIndex = 12;
             this.btnChangeClass.Text = "Đổi lớp";
             this.btnChangeClass.UseVisualStyleBackColor = true;
@@ -273,20 +298,32 @@
             // 
             // btnLogout
             // 
-            this.btnLogout.Location = new System.Drawing.Point(12, 416);
+            this.btnLogout.Location = new System.Drawing.Point(14, 544);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(99, 31);
+            this.btnLogout.Size = new System.Drawing.Size(115, 41);
             this.btnLogout.TabIndex = 13;
             this.btnLogout.Text = "Đăng Xuất";
             this.btnLogout.UseVisualStyleBackColor = true;
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
+            // btnImportExcel
+            // 
+            this.btnImportExcel.Location = new System.Drawing.Point(794, 528);
+            this.btnImportExcel.Name = "btnImportExcel";
+            this.btnImportExcel.Size = new System.Drawing.Size(92, 44);
+            this.btnImportExcel.TabIndex = 14;
+            this.btnImportExcel.Text = "Import Excel";
+            this.btnImportExcel.UseVisualStyleBackColor = true;
+            this.btnImportExcel.Click += new System.EventHandler(this.btnImportExcel_Click);
+            // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(933, 588);
+            this.Controls.Add(this.btnImportExcel);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnChangeClass);
             this.Controls.Add(this.groupBox2);
@@ -300,6 +337,7 @@
             this.Controls.Add(this.btnAddMember);
             this.Controls.Add(this.grpMembers);
             this.Controls.Add(this.grpSummary);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "FrmMain";
             this.Text = "FrmMain";
             this.Load += new System.EventHandler(this.FrmMain_Load);
@@ -337,5 +375,6 @@
         private System.Windows.Forms.Button btnAddExpense;
         private System.Windows.Forms.Button btnChangeClass;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Button btnImportExcel;
     }
 }
