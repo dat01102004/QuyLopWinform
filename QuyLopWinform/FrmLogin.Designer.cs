@@ -33,12 +33,12 @@
             this.txtEmail = new System.Windows.Forms.TextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
-            this.btnRegister = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.lblNoAccount = new System.Windows.Forms.Label();
+            this.lnkRegister = new System.Windows.Forms.LinkLabel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,17 +91,6 @@
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click_1);
             // 
-            // btnRegister
-            // 
-            this.btnRegister.Location = new System.Drawing.Point(681, 315);
-            this.btnRegister.Margin = new System.Windows.Forms.Padding(4);
-            this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(87, 28);
-            this.btnRegister.TabIndex = 5;
-            this.btnRegister.Text = "Đăng ký";
-            this.btnRegister.UseVisualStyleBackColor = true;
-            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.textBox1);
@@ -110,7 +99,7 @@
             this.panel1.Location = new System.Drawing.Point(30, 147);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(446, 173);
+            this.panel1.Size = new System.Drawing.Size(359, 173);
             this.panel1.TabIndex = 6;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -121,7 +110,7 @@
             this.textBox1.Location = new System.Drawing.Point(16, 97);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(419, 26);
+            this.textBox1.Size = new System.Drawing.Size(335, 26);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "Quản lý thu chi lớp học đơn giản, rõ ràng, nhanh chóng";
             // 
@@ -149,30 +138,42 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Đăng Nhập";
             // 
-            // textBox2
+            // lblNoAccount
             // 
-            this.textBox2.Location = new System.Drawing.Point(563, 318);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(205, 25);
-            this.textBox2.TabIndex = 8;
-            this.textBox2.Text = "Chưa có tài khoản?";
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.lblNoAccount.AutoSize = true;
+            this.lblNoAccount.BackColor = System.Drawing.Color.Transparent;
+            this.lblNoAccount.Location = new System.Drawing.Point(533, 337);
+            this.lblNoAccount.Name = "lblNoAccount";
+            this.lblNoAccount.Size = new System.Drawing.Size(126, 19);
+            this.lblNoAccount.TabIndex = 8;
+            this.lblNoAccount.Text = "Chưa có tài khoản?";
+            this.lblNoAccount.Click += new System.EventHandler(this.lblNoAccount_Click);
+            // 
+            // lnkRegister
+            // 
+            this.lnkRegister.AutoSize = true;
+            this.lnkRegister.Location = new System.Drawing.Point(665, 337);
+            this.lnkRegister.Name = "lnkRegister";
+            this.lnkRegister.Size = new System.Drawing.Size(94, 19);
+            this.lnkRegister.TabIndex = 9;
+            this.lnkRegister.TabStop = true;
+            this.lnkRegister.Text = "Đăng ký ngay";
+            this.lnkRegister.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRegister_LinkClicked);
             // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(919, 473);
+            this.Controls.Add(this.lnkRegister);
+            this.Controls.Add(this.lblNoAccount);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FrmLogin";
             this.Text = "FrmLogin";
@@ -191,11 +192,11 @@
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label lblNoAccount;
+        private System.Windows.Forms.LinkLabel lnkRegister;
     }
 }

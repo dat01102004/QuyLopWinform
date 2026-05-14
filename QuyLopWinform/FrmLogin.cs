@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LopFund.BLL;
+using LopFund.DAL;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using LopFund.BLL;
-using LopFund.DAL;
 
 namespace QuyLopWinform
 {
@@ -23,53 +23,194 @@ namespace QuyLopWinform
             btnLogin.Click -= btnLogin_Click;
             btnLogin.Click += btnLogin_Click;
 
-            btnRegister.Click -= btnRegister_Click;
-            btnRegister.Click += btnRegister_Click;
+            if (lnkRegister != null)
+            {
+                lnkRegister.LinkClicked -= lnkRegister_LinkClicked;
+                lnkRegister.LinkClicked += lnkRegister_LinkClicked;
+            }
 
             this.AcceptButton = btnLogin;
         }
 
         private void SetupLoginUI()
         {
+            // ===== FORM =====
             this.Text = "Đăng nhập";
-            this.BackColor = Color.FromArgb(244, 247, 251);
+            this.BackColor = Color.FromArgb(245, 248, 252);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = new Font("Segoe UI", 10F);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = true;
 
+            // Ẩn label cũ trong Designer để tránh bị nhầm label1, label2, label3
+            HideOldLabels();
+            if (textBox1 != null)
+            {
+                textBox1.Visible = false;
+                textBox1.Enabled = false;
+            }
+            // ===== LEFT BRANDING =====
+            Label lblAppTitle = CreateOrGetLabel("uiLblAppTitle");
+            lblAppTitle.Text = "Quỹ Lớp";
+            lblAppTitle.Font = new Font("Segoe UI", 32F, FontStyle.Bold);
+            lblAppTitle.ForeColor = Color.FromArgb(13, 110, 253);
+            lblAppTitle.BackColor = Color.Transparent;
+            lblAppTitle.AutoSize = true;
+            lblAppTitle.Location = new Point(48, 185);
+            lblAppTitle.Visible = true;
+            lblAppTitle.BringToFront();
+
+            Label lblSlogan = CreateOrGetLabel("uiLblSlogan");
+            lblSlogan.Text = "Quản lý thu chi lớp học đơn giản, rõ ràng, nhanh chóng";
+            lblSlogan.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblSlogan.ForeColor = Color.FromArgb(55, 65, 81);
+            lblSlogan.BackColor = Color.Transparent;
+            lblSlogan.AutoSize = true;
+            lblSlogan.Location = new Point(52, 250);   // vị trí thay cho dòng cũ
+            lblSlogan.Visible = true;
+            lblSlogan.BringToFront();
+
+            // ===== RIGHT LOGIN FORM =====
+            int labelX = 575;
+            int inputX = 650;
+            int titleY = 180;
+            int emailY = 240;
+            int passwordY = 275;
+            int buttonY = 325;
+            int registerY = 405;
+
+            Label lblLoginTitle = CreateOrGetLabel("uiLblLoginTitle");
+            lblLoginTitle.Text = "Đăng Nhập";
+            lblLoginTitle.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            lblLoginTitle.ForeColor = Color.FromArgb(17, 24, 39);
+            lblLoginTitle.BackColor = Color.Transparent;
+            lblLoginTitle.AutoSize = true;
+            lblLoginTitle.Location = new Point(inputX + 5, titleY);
+            lblLoginTitle.Visible = true;
+            lblLoginTitle.BringToFront();
+
+            Label lblEmailNew = CreateOrGetLabel("uiLblEmail");
+            lblEmailNew.Text = "Email";
+            lblEmailNew.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+            lblEmailNew.ForeColor = Color.FromArgb(55, 65, 81);
+            lblEmailNew.BackColor = Color.Transparent;
+            lblEmailNew.AutoSize = true;
+            lblEmailNew.Location = new Point(labelX, emailY + 4);
+            lblEmailNew.Visible = true;
+            lblEmailNew.BringToFront();
+
+            Label lblPasswordNew = CreateOrGetLabel("uiLblPassword");
+            lblPasswordNew.Text = "Mật Khẩu";
+            lblPasswordNew.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+            lblPasswordNew.ForeColor = Color.FromArgb(55, 65, 81);
+            lblPasswordNew.BackColor = Color.Transparent;
+            lblPasswordNew.AutoSize = true;
+            lblPasswordNew.Location = new Point(labelX, passwordY + 4);
+            lblPasswordNew.Visible = true;
+            lblPasswordNew.BringToFront();
+
+            // ===== TEXTBOX =====
+            txtEmail.Font = new Font("Segoe UI", 10F);
+            txtEmail.BorderStyle = BorderStyle.FixedSingle;
+            txtEmail.Width = 220;
+            txtEmail.Height = 28;
+            txtEmail.Location = new Point(inputX, emailY);
+            txtEmail.BringToFront();
+
+            txtPassword.Font = new Font("Segoe UI", 10F);
+            txtPassword.BorderStyle = BorderStyle.FixedSingle;
+            txtPassword.Width = 220;
+            txtPassword.Height = 28;
+            txtPassword.Location = new Point(inputX, passwordY);
+            txtPassword.UseSystemPasswordChar = true;
+            txtPassword.BringToFront();
+
+            // ===== BUTTON LOGIN =====
+            btnLogin.Text = "Đăng Nhập";
             btnLogin.BackColor = Color.FromArgb(37, 99, 235);
             btnLogin.ForeColor = Color.White;
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.FlatAppearance.BorderSize = 0;
-            btnLogin.Font = new Font("Segoe UI Semibold", 10F);
+            btnLogin.FlatAppearance.MouseOverBackColor = Color.FromArgb(29, 78, 216);
+            btnLogin.FlatAppearance.MouseDownBackColor = Color.FromArgb(30, 64, 175);
+            btnLogin.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnLogin.Width = 125;
             btnLogin.Height = 38;
-            btnLogin.Width = 120;
+            btnLogin.Location = new Point(inputX, buttonY);
             btnLogin.Cursor = Cursors.Hand;
             btnLogin.UseVisualStyleBackColor = false;
+            btnLogin.BringToFront();
 
-            btnRegister.BackColor = Color.White;
-            btnRegister.ForeColor = Color.FromArgb(37, 99, 235);
-            btnRegister.FlatStyle = FlatStyle.Flat;
-            btnRegister.FlatAppearance.BorderColor = Color.FromArgb(37, 99, 235);
-            btnRegister.FlatAppearance.BorderSize = 1;
-            btnRegister.Font = new Font("Segoe UI Semibold", 10F);
-            btnRegister.Height = 38;
-            btnRegister.Width = 110;
-            btnRegister.Cursor = Cursors.Hand;
-            btnRegister.UseVisualStyleBackColor = false;
+            // ===== REGISTER LINE =====
+            if (lblNoAccount != null)
+            {
+                lblNoAccount.Text = "Chưa có tài khoản?";
+                lblNoAccount.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+                lblNoAccount.ForeColor = Color.FromArgb(75, 85, 99);
+                lblNoAccount.BackColor = Color.Transparent;
+                lblNoAccount.AutoSize = true;
+                lblNoAccount.Location = new Point(inputX - 70, registerY);
+                lblNoAccount.Visible = true;
+                lblNoAccount.BringToFront();
+            }
 
-            txtEmail.Font = new Font("Segoe UI", 10F);
-            txtPassword.Font = new Font("Segoe UI", 10F);
+            if (lnkRegister != null)
+            {
+                lnkRegister.Text = "Đăng ký ngay";
+                lnkRegister.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+                lnkRegister.BackColor = Color.Transparent;
+                lnkRegister.AutoSize = true;
 
-            txtEmail.BorderStyle = BorderStyle.FixedSingle;
-            txtPassword.BorderStyle = BorderStyle.FixedSingle;
+                lnkRegister.LinkColor = Color.FromArgb(37, 99, 235);
+                lnkRegister.ActiveLinkColor = Color.FromArgb(30, 64, 175);
+                lnkRegister.VisitedLinkColor = Color.FromArgb(37, 99, 235);
 
-            txtEmail.Width = 220;
-            txtPassword.Width = 220;
+                // Xóa gạch chân dưới chữ đăng ký
+                lnkRegister.LinkBehavior = LinkBehavior.NeverUnderline;
 
-            txtPassword.UseSystemPasswordChar = true;
+                lnkRegister.Cursor = Cursors.Hand;
+                lnkRegister.TabStop = true;
+                lnkRegister.Location = new Point(inputX + 70, registerY);
+                lnkRegister.Visible = true;
+                lnkRegister.BringToFront();
+            }
+        }
+
+ private void HideOldLabels()
+{
+    HideOldLabelsRecursive(this);
+}
+
+private void HideOldLabelsRecursive(Control parent)
+{
+    foreach (Control c in parent.Controls)
+    {
+        if (c is Label && !c.Name.StartsWith("uiLbl"))
+        {
+            c.Visible = false;
+        }
+
+        if (c.HasChildren)
+        {
+            HideOldLabelsRecursive(c);
+        }
+    }
+}
+
+        private Label CreateOrGetLabel(string name)
+        {
+            Control[] found = this.Controls.Find(name, true);
+
+            if (found.Length > 0 && found[0] is Label existingLabel)
+            {
+                return existingLabel;
+            }
+
+            Label label = new Label();
+            label.Name = name;
+            this.Controls.Add(label);
+            return label;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -79,36 +220,50 @@ namespace QuyLopWinform
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(pass))
             {
-                MessageBox.Show("Vui lòng nhập Email và Mật khẩu.");
+                MessageBox.Show(
+                    "Vui lòng nhập Email và Mật khẩu.",
+                    "Thiếu thông tin",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
 
             try
             {
                 var user = _userBll.Login(email, pass);
+
                 if (user == null)
                 {
-                    MessageBox.Show("Sai email hoặc mật khẩu!");
+                    MessageBox.Show(
+                        "Sai email hoặc mật khẩu!",
+                        "Đăng nhập thất bại",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
                     return;
                 }
 
                 LoggedInUser = user;
 
-                // 1) set user session
                 AppSession.CurrentUserId = user.UserId;
                 AppSession.CurrentClassId = 0;
 
-                // 2) luôn mở form chọn lớp
                 using (var pick = new FrmClassPicker())
                 {
                     var r = pick.ShowDialog();
+
                     if (r != DialogResult.OK)
                         return;
 
-                    // FrmClassPicker sẽ set SelectedClassId + AppSession.CurrentClassId
                     if (!pick.SelectedClassId.HasValue)
                     {
-                        MessageBox.Show("Bạn chưa chọn lớp.");
+                        MessageBox.Show(
+                            "Bạn chưa chọn lớp.",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information
+                        );
                         return;
                     }
 
@@ -121,15 +276,16 @@ namespace QuyLopWinform
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
-        private void FrmLogin_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void btnRegister_Click(object sender, EventArgs e)
+        private void OpenRegisterForm()
         {
             this.Hide();
 
@@ -153,6 +309,20 @@ namespace QuyLopWinform
             }
         }
 
+        private void lnkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenRegisterForm();
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            OpenRegisterForm();
+        }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+        }
+
         private void btnLogin_Click_1(object sender, EventArgs e)
         {
         }
@@ -170,6 +340,10 @@ namespace QuyLopWinform
         }
 
         private void txtEmail_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void lblNoAccount_Click(object sender, EventArgs e)
         {
         }
     }
