@@ -51,6 +51,7 @@ namespace QuyLopWinform
             btnRegister.Cursor = Cursors.Hand;
             btnRegister.UseVisualStyleBackColor = false;
 
+
             btnCancel.BackColor = Color.White;
             btnCancel.ForeColor = Color.FromArgb(37, 99, 235);
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -150,6 +151,11 @@ namespace QuyLopWinform
 
         private void txtConfirm_TextChanged(object sender, EventArgs e)
         {
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
